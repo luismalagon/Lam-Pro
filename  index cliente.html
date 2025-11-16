@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lam Pro - Aplicación Cliente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="LAM Pro">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png"> 
+    <link rel="manifest" href="manifest.json">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        /* Estilo para la imagen principal */
+        #user-image {
+            max-height: 80vh; 
+            object-fit: contain;
+        }
+        /* Clases para el menú lateral en móvil */
+        .sidebar-visible {
+            transform: translateX(0) !important;
+        }
+        /* Estilo para los inputs de medidas: centrar texto */
+        input[type="number"] {
+            text-align: center;
+        }
+        /* Para prevenir la flecha de girar en el ícono de loading */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+
+    <button id="menu-toggle" class="md:hidden fixed top-4 left-4 z-[100] p-2 rounded-full bg-cyan-500 hover:bg-cyan-600 shadow-lg transition duration-150">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+    </button>
+
+    <aside id="sidebar" class="fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition duration-300 ease-in-out bg-gray-900 border-r border-gray-700 w-64 z-50 flex flex-col shadow-2xl">
+        <div class="p-6 text-center border-b border-gray-700">
+            <h1 class="text-3xl font-extrabold text-cyan-400 tracking-wider">LAM PRO</h1>
+            <p class="text-sm text-gray-400">Mejoramos lo que eres</p>
+        </div>
+        <nav class="flex-1 p-4 space-y-2">
+            <a href="#" id="nav-image-upload-view" class="flex items-center p-3 rounded-xl text-lg font-medium text-white bg-gray-800 hover:bg-gray-700 transition duration-150 shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L15 14m-2-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                Mi Motivación
+            </a>
+            <a href="#" id="nav-routines-view" class="flex items-center p-3 rounded-xl text-lg font-medium text-gray-300 hover:bg-gray-800 transition duration-150">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>
+                Rutinas
+            </a>
+            <a href="#" id="nav-workout-view" class="flex items-center p-3 rounded-xl text-lg font-medium text-gray-300 hover:bg-gray-800 transition duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 9c2 0 2.818-1.522 3.464-2.818C13.78 4.223 16 2 16 2s1 2.247 1 4c0 1.237-.432 2.373-1.076 3.414C15.82 10.985 17 12 17 12h2a2 2 0 012 2v2a2 2 0 01-2 2h-1.343z" /></svg>
+                Workout
+            </a>
+            <a href="#" id="nav-measurements-view" class="flex items-center p-3 rounded-xl text-lg font-medium text-gray-300 hover:bg-gray-800 transition duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c1.657 0 3 .895 3 2s-1.343 2-3 2h-1m-4 0h4m-4 0v2m4-2v2m-4 0H5a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v3a2 2 0 01-2 2h-1" /></svg>
+                Medidas Corporales
+            </a>
+            <a href="#" id="nav-results-view" class="flex items-center p-3 rounded-xl text-lg font-medium text-gray-300 hover:bg-gray-800 transition duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" /><path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V3.512A9.025 9.001 0 0120.488 9z" /></svg>
+                Resultados
+            </a>
+            <a href="#" id="nav-nutrition-view" class="flex items-center p-3 rounded-xl text-lg font-medium text-gray-300 hover:bg-gray-800 transition duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.002 12.002 0 0012 21c3.678 0 7.14-1.166 10-3.156 0 0 .5-1.0.5-2.0" /></svg>
+                Nutrición (IA)
+            </a>
+            <a href="#" id="nav-goals-view" class="flex items-center p-3 rounded-xl text-lg font-medium text-gray-300 hover:bg-gray-800 transition duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 10h4.764l-3.612 4.463a2 2 0 01-1.663.815h-1.653c-.347 0-.682-.128-.949-.364l-2.071-1.942a2 2 0 00-2.887.424L4 18V3a1 1 0 011-1h14a1 1 0 011 1v7" /></svg>
+                Metas
+            </a>
+            <a href="#" id="nav-admin-view" class="flex items-center p-3 rounded-xl text-lg font-medium text-gray-300 hover:bg-red-800 transition duration-150 hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.945 3.31.859 2.454 2.413a1.724 1.724 0 00-.585 3.122c.222.845 2.14 1.085 2.14 1.085s.018 2.378-2.324 2.853c-.34.07-.638.25-.838.513l-1.895 2.527c-.361.481-1.121.481-1.482 0l-1.895-2.527c-.2-.263-.498-.443-.838-.513C12.018 14.52 12 12.142 12 12.142s-1.918-.24-2.14-1.085a1.724 1.724 0 00-.585-3.122c-.856-1.554.91-3.358 2.454-2.413a1.724 1.724 0 002.573-1.066z" /></svg>
+                ADMIN
+            </a>
+        </nav>
+        <div class="p-4 border-t border-gray-700">
+            <p id="user-info-footer" class="text-xs text-gray-500 break-all">ID Usuario: Cargando...</p>
+        </div>
+    </aside>
+
+    <main id="main-content" class="md:ml-64 p-4 md:p-10 transition-all duration-300 ease-in-out">
+        <header class="text-center mb-10">
+            <h2 class="text-4xl md:text-5xl font-bold text-cyan-400 mb-2">LAM PRO</h2>
+            <p class="text-gray-400 text-xl">Mejoramos lo que eres</p>
+        </header>
+
+        <div id="message-box" class="hidden max-w-md w-full mx-auto mt-4 p-3 rounded-lg text-sm font-medium text-center" role="alert"></div>
+
+        <section id="image-upload-view" class="max-w-4xl mx-auto bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border border-gray-700">
+            <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-3">Tu Foto de Motivación Personal</h3>
+            
+            <div class="flex flex-col items-center justify-center space-y-8">
+                
+                <div id="image-container" class="relative group flex justify-center items-center p-4 bg-gray-900 rounded-xl shadow-inner border border-cyan-500/20 max-w-md w-full">
+                    
+                    <img id="user-image" 
+                         class="rounded-lg shadow-2xl w-full transition duration-300 group-hover:opacity-70"
+                         src="https://placehold.co/400x600/0f172a/06b6d4?text=SELECCIONAR%20FOTO" 
+                         alt="Foto de motivación personalizada"
+                         crossorigin="anonymous">
+
+                    <input type="file" id="file-upload" accept="image/png, image/jpeg, image/jpg" class="hidden">
+                    
+                    <button id="upload-btn-overlay" class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 bg-black/60 rounded-xl font-bold text-xl text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                        Cargar/Seleccionar mi Foto
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="routines-view" class="hidden max-w-4xl mx-auto bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border border-gray-700">
+            <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-3">Mi Progreso Diario de Rutina</h3>
+            
+            <div id="routine-content-area" class="space-y-6">
+                <div class="bg-gray-700 p-4 rounded-xl shadow-inner">
+                    <p class="text-lg font-semibold text-cyan-400" id="routine-title">Cargando Rutina...</p>
+                    <p id="routine-date" class="text-sm text-gray-400">Fecha:</p>
+                </div>
+                
+                <div id="exercises-list" class="space-y-4">
+                    <p class="text-gray-400" id="routine-loading-status">Cargando ejercicios...</p>
+                    </div>
+
+                <button id="save-daily-routine-btn" class="w-full py-3 px-4 bg-green-600 text-white text-lg font-bold rounded-xl hover:bg-green-500 transition duration-150 shadow-md disabled:bg-gray-500" disabled>
+                    Registrar Progreso del Entrenamiento
+                </button>
+            </div>
+        </section>
+        
+        <section id="workout-view" class="hidden max-w-4xl mx-auto bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border border-gray-700">
+            <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-3">🔥 Registro de Gasto Calórico por QR</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4 p-4 bg-gray-700 rounded-xl shadow-inner">
+                    <h4 class="text-xl font-semibold text-cyan-400 mb-3">Registrar Sesión</h4>
+                    
+                    <div>
+                        <label for="workout-type" class="block text-sm font-medium text-gray-300 mb-1">Modalidad / Clase</label>
+                        <select id="workout-type" class="w-full p-3 mt-1 bg-gray-900 border border-gray-600 rounded-lg text-white focus:ring-cyan-400 focus:border-cyan-400">
+                            <option value="">Selecciona una clase</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="calories-spent" class="block text-sm font-medium text-gray-300 mb-1">Calorías Gastadas (kcal)</label>
+                        <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
+                            <input type="number" id="calories-spent" placeholder="350" min="1" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                            <span class="p-3 text-cyan-400 font-bold bg-gray-700">kcal</span>
+                        </div>
+                    </div>
+                    
+                    <button id="start-scan-btn" class="w-full py-3 mt-4 bg-red-600 text-white text-lg font-bold rounded-xl hover:bg-red-500 transition duration-150">
+                        Escanear Código QR del Cliente
+                    </button>
+
+                    <div id="reader-container" class="mt-4 border-2 border-gray-600 rounded-lg overflow-hidden" style="width: 100%; aspect-ratio: 4/3; display: none;">
+                        </div>
+                    <p id="scan-status" class="text-center text-yellow-400 mt-2 italic hidden">Apuntando cámara. Escanee el UID del cliente.</p>
+                    <p id="scanned-client-uid" class="text-center text-green-400 font-bold mt-2 break-all hidden">Cliente Escaneado: UID</p>
+                    
+                </div>
+
+                <div class="space-y-4 p-4 bg-gray-700 rounded-xl shadow-inner">
+                    <h4 class="text-xl font-semibold text-cyan-400 mb-3 border-b border-gray-600 pb-2">Historial de Hoy</h4>
+                    <div id="daily-workout-summary" class="space-y-2">
+                        <p class="text-sm font-semibold text-white">Total Hoy: <span id="total-calories-today" class="text-red-400">0 kcal</span></p>
+                    </div>
+
+                    <div id="daily-workout-records" class="space-y-2 max-h-64 overflow-y-auto">
+                        <p class="text-gray-400 italic">Cargando registros...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="goals-view" class="hidden max-w-4xl mx-auto bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border border-gray-700">
+            <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-3">Metas de Nutrición y Seguimiento</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="space-y-4 p-4 bg-gray-700 rounded-xl shadow-inner">
+                    <h4 class="text-xl font-semibold text-white border-b border-gray-600 pb-2 mb-3">Establecer Mis Metas</h4>
+                    
+                    <div>
+                        <label for="goal-calories-daily" class="block text-sm font-medium text-gray-300 mb-1">Meta Calórica Diaria</label>
+                        <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
+                            <input type="number" id="goal-calories-daily" placeholder="2000" min="1" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                            <span class="p-3 text-cyan-400 font-bold bg-gray-700">kcal</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="goal-calories-weekly" class="block text-sm font-medium text-gray-300 mb-1">Meta Calórica Semanal</label>
+                        <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
+                            <input type="number" id="goal-calories-weekly" placeholder="14000" min="1" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                            <span class="p-3 text-cyan-400 font-bold bg-gray-700">kcal</span>
+                        </div>
+                    </div>
+                    
+                    <button id="save-goals-btn" class="w-full py-2 mt-2 bg-cyan-600 text-white font-bold rounded-xl hover:bg-cyan-500 transition duration-150">
+                        Guardar Metas
+                    </button>
+                </div>
+                
+                <div class="space-y-4 p-4 bg-gray-700 rounded-xl shadow-inner">
+                    <h4 class="text-xl font-semibold text-white border-b border-gray-600 pb-2 mb-3">Tu Seguimiento Actual</h4>
+                    
+                    <div id="daily-tracking-box" class="p-4 rounded-xl border-2 border-cyan-500 bg-gray-800 transition duration-300">
+                        <p class="text-lg font-semibold text-white mb-2">Consumo Diario (Hoy)</p>
+                        <p class="text-3xl font-extrabold text-cyan-400" id="daily-consumed">0 kcal</p>
+                        <p class="text-sm text-gray-400" id="daily-goal-text">Meta: 0 kcal</p>
+                        <p class="text-sm font-bold mt-2" id="daily-alert"></p>
+                    </div>
+                    
+                    <div class="p-4 rounded-xl border-2 border-gray-500 bg-gray-800">
+                        <p class="text-lg font-semibold text-white mb-2">Consumo Semanal</p>
+                        <p class="text-3xl font-extrabold text-white" id="weekly-consumed">0 kcal</p>
+                        <p class="text-sm text-gray-400" id="weekly-goal-text">Meta: 0 kcal</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="measurements-view" class="hidden max-w-4xl mx-auto bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border border-gray-700">
+            <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-3">Registro de Medidas Corporales</h3>
+            <p class="text-gray-400 mb-6">Ingresa tus medidas con hasta dos decimales (ej: 99.99).</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                <div class="space-y-4 md:col-span-1">
+                    <div class="col-span-2">
+                        <label for="input-weight" class="block text-sm font-medium text-gray-300 mb-1">Peso</label>
+                        <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
+                            <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-weight" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                            <span class="p-3 text-cyan-400 font-bold bg-gray-700">kg</span>
+                        </div>
+                    </div>
+
+                    <label for="input-neck" class="block text-sm font-medium text-gray-300 mb-1">Cuello</label>
+                    <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
+                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-neck" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                            <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                    </div>
+
+                    <label for="input-shoulder" class="block text-sm font-medium text-gray-300 mb-1">Hombro</label>
+                    <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
+                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-shoulder" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                        <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                    </div>
+
+                    <label for="input-chest" class="block text-sm font-medium text-gray-300 mb-1">Busto / Pecho</label>
+                    <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
+                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-chest" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                        <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                    </div>
+                    
+                    <label for="input-arm" class="block text-sm font-medium text-gray-300 mb-1">Brazo</label>
+                    <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
+                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-arm" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                        <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                    </div>
+                </div>
+
+                <div class="space-y-4 md:col-span-1 pt-4 md:pt-0">
+                    <label for="input-forearm" class="block text-sm font-medium text-gray-300 mb-1">Antebrazo</label>
+                    <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
+                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-forearm" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                        <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                    </div>
+
+                    <label for="input-waist" class="block text-sm font-medium text-gray-300 mb-1">Cintura</label>
+                    <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
+                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-waist" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                        <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                    </div>
+
+                    <label for="input-abdomen" class="block text-sm font-medium text-gray-300 mb-1">Abdomen</label>
+                    <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
+                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-abdomen" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                        <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                    </div>
+
+                    <label for="input-hips" class="block text-sm font-medium text-gray-300 mb-1">Cadera</label>
+                    <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
+                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-hips" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                        <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                    </div>
+                    
+                    <label for="input-thigh" class="block text-sm font-medium text-gray-300 mb-1">Muslo</label>
+                    <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
+                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-thigh" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                        <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                    </div>
+                </div>
+
+                <div class="space-y-4 md:col-span-2">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+                        <div>
+                            <label for="input-calf" class="block text-sm font-medium text-gray-300 mb-1">Pantorrilla</label>
+                            <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
+                                <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-calf" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                                <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                            </div>
+                        </div>
+                        <div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+            <button id="save-measurements-btn" class="w-full mt-6 py-3 px-4 bg-cyan-600 text-white text-lg font-bold rounded-xl hover:bg-cyan-500 transition duration-150 shadow-md">
+                Guardar Medidas
+            </button>
+        </section>
+
+        <section id="results-view" class="hidden max-w-4xl mx-auto bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border border-gray-700">
+            <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-3">📈 Resultados y Progreso</h3>
+            
+            <div class="space-y-10">
+                <div class="bg-gray-700 p-4 rounded-xl shadow-inner">
+                    <h4 class="text-xl font-semibold text-cyan-400 mb-4">Historial de Peso (kg)</h4>
+                    <div class="h-64">
+                        <canvas id="weight-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-gray-700 p-4 rounded-xl shadow-inner">
+                    <h4 class="text-xl font-semibold text-cyan-400 mb-4">Cambios de Medidas (Inicio vs. Último)</h4>
+                    <div class="overflow-x-auto">
+                        <table id="measurements-comparison" class="min-w-full divide-y divide-gray-600">
+                            <thead>
+                                <tr>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Medida</th>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Valor Inicial</th>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Último Valor</th>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Cambio</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-700" id="comparison-body">
+                                </tbody>
+                        </table>
+                        <p id="no-measurements-data" class="text-gray-400 p-3 hidden">No hay suficientes registros para comparar.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-700 p-4 rounded-xl shadow-inner">
+                    <h4 class="text-xl font-semibold text-cyan-400 mb-4">📊 Estado de Metas Calóricas (Últimos 7 días)</h4>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-600">
+                            <thead>
+                                <tr>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Día</th>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Consumo Total (kcal)</th>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Meta Diaria</th>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-700" id="caloric-goals-body">
+                                </tbody>
+                        </table>
+                        <p id="no-caloric-data" class="text-gray-400 p-3 hidden">No hay registros de comidas para el seguimiento semanal.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="nutrition-view" class="hidden max-w-4xl mx-auto bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border border-gray-700">
+            <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-3">Análisis Nutricional (IA)</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div class="p-4 bg-gray-700 rounded-xl shadow-inner">
+                        <h4 class="text-xl font-semibold text-white mb-3 border-b border-gray-600 pb-2">Foto de la Comida</h4>
+
+                        <input type="file" id="meal-file-upload" accept="image/*" class="hidden">
+
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <button id="capture-photo-btn" class="py-2 px-4 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-700 transition duration-150 border border-cyan-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l1.458-2.618A2 2 0 0111.332 3h1.334a2 2 0 011.664.89l1.458 2.618A2 2 0 0017.07 7H18a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                                Tomar Foto
+                            </button>
+                            <button id="browse-photo-btn" class="py-2 px-4 bg-cyan-600 text-white font-bold rounded-xl hover:bg-cyan-500 transition duration-150">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                Buscar Archivos
+                            </button>
+                        </div>
+                        
+                        <div class="relative max-w-full h-48 bg-gray-900 rounded-xl flex items-center justify-center overflow-hidden border border-gray-700">
+                            <img id="meal-preview" class="object-cover w-full h-full" src="https://placehold.co/300x200/0f172a/06b6d4?text=CARGAR%20COMIDA" alt="Previsualización de comida">
+                            <div id="loading-overlay" class="absolute inset-0 bg-black/70 flex flex-col items-center justify-center hidden">
+                                <svg class="animate-spin h-8 w-8 text-cyan-400 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l-1.42 1.42A9.957 9.957 0 0012 22v-4c-2.115 0-4.085-.85-5.54-2.291z"></path></svg>
+                                <p class="text-white">Analizando con IA...</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="meal-results-box" class="p-4 bg-gray-700 rounded-xl shadow-inner space-y-3 hidden">
+                        <h4 class="text-xl font-semibold text-white border-b border-gray-600 pb-2">Resultados Estimados (IA)</h4>
+                        
+                        <p class="text-lg font-semibold text-cyan-400" id="meal-name">Comida: Desconocida</p>
+                        
+                        <div class="flex flex-col space-y-2">
+                            <p class="text-white">
+                                <span class="font-bold text-2xl" id="estimated-calories">0</span> 
+                                <span class="text-sm text-gray-400">kcal</span>
+                            </p>
+                            <p class="text-white">
+                                <span class="font-bold text-2xl" id="estimated-protein">0</span> 
+                                <span class="text-sm text-gray-400">gramos de proteína</span>
+                            </p>
+                        </div>
+
+                        <button id="save-meal-btn" class="w-full py-2 bg-green-600 text-white font-bold rounded-xl hover:bg-green-500 transition duration-150 mt-3">
+                            Registrar Comida
+                        </button>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="p-4 bg-gray-700 rounded-xl shadow-inner">
+                        <h4 class="text-xl font-semibold text-white border-b border-gray-600 pb-2 mb-3">Registro Diario de Comidas</h4>
+                        <div id="daily-records-list" class="space-y-2 h-64 overflow-y-auto">
+                            <p class="text-gray-400">No hay registros para hoy.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 bg-gray-700 rounded-xl shadow-inner">
+                        <h4 class="text-xl font-semibold text-white border-b border-gray-600 pb-2 mb-3">Resumen Semanal</h4>
+                        <div id="weekly-summary-area" class="space-y-2">
+                            <p class="text-gray-300">Total Calorías (7 días): <span class="font-bold text-cyan-400" id="weekly-calories-total">0</span> kcal</p>
+                            <p class="text-gray-300">Total Proteínas (7 días): <span class="font-bold text-cyan-400" id="weekly-protein-total">0</span> g</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="admin-view" class="hidden max-w-5xl mx-auto bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border border-red-700">
+            <h3 class="text-2xl font-bold text-white mb-6 border-b border-red-700 pb-3">⚙️ Panel de Administración</h3>
+            <p class="text-red-400 mb-6">Solo los usuarios con rol 'admin' pueden acceder a esta sección.</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <div class="bg-gray-700 p-4 rounded-xl shadow-inner col-span-1">
+                    <h4 class="text-xl font-semibold text-cyan-400 mb-4 border-b border-gray-600 pb-2">1. Registrar Nuevo Cliente</h4>
+                    <p class="text-sm text-gray-400 mb-3">Asigna un nombre y ID al nuevo cliente.</p>
+                    
+                    <div class="space-y-3">
+                        <div>
+                            <label for="new-user-id" class="block text-sm font-medium text-gray-300">ID del Cliente (UID)</label>
+                            <input type="text" id="new-user-id" placeholder="UID generado por Firebase" class="w-full p-2 mt-1 bg-gray-900 border border-gray-600 rounded-lg text-white">
+                        </div>
+                        <div>
+                            <label for="new-user-name" class="block text-sm font-medium text-gray-300">Nombre del Cliente</label>
+                            <input type="text" id="new-user-name" placeholder="Nombre completo" class="w-full p-2 mt-1 bg-gray-900 border border-gray-600 rounded-lg text-white">
+                        </div>
+                        <button id="register-new-user-btn" class="w-full py-2 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-500 transition duration-150">
+                            Registrar Cliente y Generar QR
+                        </button>
+                    </div>
+
+                    <div id="qr-code-area" class="mt-6 pt-4 border-t border-gray-600 text-center hidden">
+                        <h5 class="text-lg font-medium text-white mb-2">Código QR del Cliente</h5>
+                        <div id="qr-canvas-container" class="bg-white p-2 inline-block rounded-lg shadow-lg">
+                            </div>
+                        <p id="qr-client-name" class="text-sm text-cyan-400 mt-2 break-all"></p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-700 p-4 rounded-xl shadow-inner col-span-1 lg:col-span-2">
+                    <h4 class="text-xl font-semibold text-cyan-400 mb-4 border-b border-gray-600 pb-2">2. Rutina de Entrenamiento Global</h4>
+                    
+                    <div class="space-y-3">
+                        <div>
+                            <label for="routine-admin-title" class="block text-sm font-medium text-gray-300">Título de la Rutina</label>
+                            <input type="text" id="routine-admin-title" placeholder="Ej: Fase 1 - Fuerza y Resistencia" class="w-full p-2 mt-1 bg-gray-900 border border-gray-600 rounded-lg text-white">
+                        </div>
+                        <h5 class="text-lg font-medium text-gray-300 pt-2 border-t border-gray-600">Ejercicios (Formato: Nombre, Series, Repeticiones)</h5>
+                        
+                        <textarea id="routine-admin-content" rows="6" placeholder="Ejemplo:&#10;- Sentadilla, 4, 12&#10;- Press de Banca, 3, 10&#10;- Peso Muerto, 3, 8" class="w-full p-2 mt-1 bg-gray-900 border border-gray-600 rounded-lg text-white"></textarea>
+                        
+                        <button id="save-global-routine-btn" class="w-full py-2 bg-cyan-600 text-white font-bold rounded-xl hover:bg-cyan-500 transition duration-150">
+                            Guardar Rutina Global
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-gray-700 p-4 rounded-xl shadow-inner mt-6">
+                <h4 class="text-xl font-semibold text-cyan-400 mb-4 border-b border-gray-600 pb-2">3. Clientes Registrados</h4>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-600">
+                        <thead>
+                            <tr>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Nombre</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">ID (UID)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700" id="registered-users-list">
+                            <tr id="loading-users-row"><td class="px-3 py-2 text-gray-400 italic" colspan="2">Cargando lista de clientes...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <div id="key-warning" class="fixed bottom-0 left-0 right-0 bg-red-800 text-white p-2 text-center text-sm hidden">
+        ⚠️ **ADVERTENCIA:** Si la IA falla, inserta tu clave de API de Gemini en la variable `API_KEY` dentro del script.
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, setLogLevel, onSnapshot, collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global variables provided by the environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        
+        // =========================================================================
+        // !!! CLAVE DE API INSERTADA !!!
+        // =========================================================================
+        const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=";
+        const API_KEY = "AIzaSyCpZYAis7BKGaahwQ2cJTikYrdKIkhoCck"; 
+        
+        // La advertencia se ocultará si la clave es válida.
+        if (API_KEY === "") {
+            document.getElementById('key-warning').classList.remove('hidden');
+        }
+        // =========================================================================
+        
+        let db;
+        let auth;
+        let userId = null;
+        let currentMealData = null; 
+        let dailyGoal = 0;
+        let weeklyGoal = 0;
+
+        // Constantes de Firestore
+        const GOALS_COLLECTION = "goals";
+        const GOALS_DOC_ID = "nutrition_goals";
+        const MEASUREMENTS_COLLECTION = "measurements";
+        const MEASUREMENTS_DOC_ID = "data";
+        const MEAL_RECORDS_COLLECTION = "meal_records";
+        const PUBLIC_ROUTINE_COLLECTION = "routines";
+        const PUBLIC_ROUTINE_DOC_ID = "current_routine";
+        const DAILY_ROUTINE_RECORDS_COLLECTION = "daily_routine_records";
+        const MEASUREMENTS_RECORDS_COLLECTION = "measurements_records";
+        const REGISTERED_USERS_COLLECTION = "registered_users"; 
+        const WORKOUT_RECORDS_COLLECTION = "workout_records"; 
+        
+        // Referencias a Vistas y Navegación
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const menuToggle = document.getElementById('menu-toggle');
+        const messageBox = document.getElementById('message-box');
+        const userInfoFooter = document.getElementById('user-info-footer');
+        
+        // Referencias a Inputs de Archivo
+        const motivationFileUpload = document.getElementById('file-upload');
+        const mealFileUpload = document.getElementById('meal-file-upload');
+
+        // Referencias a Vistas
+        const views = {
+            'image-upload-view': document.getElementById('image-upload-view'),
+            'routines-view': document.getElementById('routines-view'),
+            'workout-view': document.getElementById('workout-view'), 
+            'measurements-view': document.getElementById('measurements-view'),
+            'results-view': document.getElementById('results-view'), 
+            'nutrition-view': document.getElementById('nutrition-view'),
+            'goals-view': document.getElementById('goals-view'),
+            'admin-view': document.getElementById('admin-view'), 
+        };
+
+        // --- Utilidades y UI General ---
+
+        function showMessage(text, colorClass) {
+            messageBox.textContent = text;
+            messageBox.className = `${colorClass} text-white p-3 rounded-lg text-sm font-medium text-center block transition-all duration-300`;
+            setTimeout(() => {
+                messageBox.classList.add('hidden');
+            }, 5000);
+        }
+
+        function setActiveView(viewId) {
+            Object.values(views).forEach(view => {
+                if (view) view.classList.add('hidden');
+            });
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('bg-gray-800', 'text-white', 'shadow-md');
+                link.classList.add('text-gray-300');
+            });
+
+            const targetView = views[viewId];
+            if (targetView) {
+                targetView.classList.remove('hidden');
+            }
+
+            const activeLink = document.getElementById(`nav-${viewId}`);
+            if (activeLink) {
+                activeLink.classList.add('bg-gray-800', 'text-white', 'shadow-md');
+                activeLink.classList.remove('text-gray-300');
+            }
+            
+            if (db && userId) {
+                if (viewId === 'goals-view') {
+                    loadGoals();
+                    loadMealRecords(); 
+                } else if (viewId === 'nutrition-view') {
+                    loadMealRecords();
+                } else if (viewId === 'measurements-view') {
+                    loadMeasurements();
+                } else if (viewId === 'routines-view') {
+                    loadRoutines(); 
+                } else if (viewId === 'results-view') {
+                    loadResults();
+                } else if (viewId === 'workout-view') {
+                    loadWorkoutRecords();
+                } else if (viewId === 'admin-view') {
+                    loadAdminData();
+                }
+            }
+            
+            closeSidebarOnMobile();
+        }
+
+        function closeSidebarOnMobile() {
+             if (sidebar.classList.contains('sidebar-visible') && window.innerWidth < 768) {
+                sidebar.classList.remove('sidebar-visible');
+                mainContent.removeEventListener('click', closeSidebarOnMobile);
+            }
+        }
+        
+        // --- Firebase Initialization and Auth ---
+
+        const getRegisteredUserDocRef = (uid) => {
+            return doc(db, 'artifacts', appId, REGISTERED_USERS_COLLECTION, uid);
+        };
+        
+        async function checkUserRole(uid) {
+            if (!db) return 'user';
+            try {
+                const userDocRef = getRegisteredUserDocRef(uid);
+                const docSnap = await getDoc(userDocRef);
+                if (docSnap.exists()) {
+                    return docSnap.data().role || 'user';
+                }
+                return 'user';
+            } catch (error) {
+                console.error("Error checking user role:", error);
+                return 'user';
+            }
+        }
+
+        async function initFirebaseAndAuth() {
+            if (typeof firebaseConfig.apiKey !== 'undefined' && firebaseConfig.apiKey !== '') {
+                setLogLevel('Debug');
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        userInfoFooter.textContent = `ID Usuario: ${userId}`;
+                        setupNavListeners();
+                        setupEventListeners();
+                        
+                        const role = await checkUserRole(userId);
+                        
+                        if (role === 'admin') {
+                            document.getElementById('nav-admin-view').classList.remove('hidden');
+                            await loadAdminData();
+                            setActiveView('admin-view');
+                        } else {
+                            document.getElementById('nav-admin-view').classList.add('hidden');
+                            await Promise.all([
+                                loadRoutines(), 
+                                loadGoals(), 
+                                loadMealRecords(), 
+                            ]);
+                            loadMeasurements(); 
+                            setActiveView('image-upload-view');
+                        }
+                    } else {
+                        try {
+                            if (initialAuthToken) {
+                                await signInWithCustomToken(auth, initialAuthToken);
+                            } else {
+                                await signInAnonymously(auth);
+                            }
+                        } catch (error) {
+                            console.error("Error signing in:", error);
+                            userInfoFooter.textContent = "Error de Conexión.";
+                            setupNavListeners();
+                            setupEventListeners();
+                            setActiveView('image-upload-view'); 
+                        }
+                    }
+                });
+            } else {
+                userId = crypto.randomUUID();
+                userInfoFooter.textContent = "Modo Demo (Sin Firebase)";
+                setupNavListeners();
+                setupEventListeners();
+                setActiveView('image-upload-view'); 
+            }
+        }
+        
+        // --- Firestore References ---
+
+        const getUserDocRef = (collection, docId) => {
+            return doc(db, 'artifacts', appId, 'users', userId, collection, docId);
+        };
+        
+        const getPublicDocRef = (collection, docId) => {
+            return doc(db, 'artifacts', appId, 'public', 'data', collection, docId);
+        };
+        
+        const getMealRecordsCollectionRef = () => {
+            return collection(db, 'artifacts', appId, 'users', userId, MEAL_RECORDS_COLLECTION);
+        };
+
+        const getUserCollectionRef = (collectionName) => {
+            return collection(db, 'artifacts', appId, 'users', userId, collectionName);
+        };
+
+        const getDailyRoutineRecordsCollectionRef = () => {
+            return getUserCollectionRef(DAILY_ROUTINE_RECORDS_COLLECTION);
+        };
+        
+        const getMeasurementsRecordsCollectionRef = () => {
+            return getUserCollectionRef(MEASUREMENTS_RECORDS_COLLECTION);
+        };
+        
+        const getWorkoutRecordsCollectionRef = (uid = userId) => {
+            return collection(db, 'artifacts', appId, 'users', uid, WORKOUT_RECORDS_COLLECTION);
+        };
+
+
+        // --- Lógica del Panel de Administrador ---
+        const routineAdminTitleInput = document.getElementById('routine-admin-title');
+        const routineAdminContentTextarea = document.getElementById('routine-admin-content');
+        const registeredUsersListBody = document.getElementById('registered-users-list');
+        const newUserUIDInput = document.getElementById('new-user-id');
+        const newUserNameInput = document.getElementById('new-user-name');
+        const qrCodeArea = document.getElementById('qr-code-area');
+        const qrCanvasContainer = document.getElementById('qr-canvas-container');
+        const qrClientNameDisplay = document.getElementById('qr-client-name');
+
+        function generateQRCode(uid, name) {
+            qrCanvasContainer.innerHTML = '';
+            
+            // Usando API externa para generar QR de forma simple (requiere conexión a Internet)
+            const imageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(uid)}`;
+            
+            const img = document.createElement('img');
+            img.src = imageUrl;
+            img.width = 150;
+            img.height = 150;
+            
+            qrCanvasContainer.appendChild(img);
+            qrClientNameDisplay.textContent = `Cliente: ${name}`;
+            qrCodeArea.classList.remove('hidden');
+        }
+
+        async function loadAdminData() {
+            if (!db) return;
+            
+            // 1. Cargar Rutina Global existente
+            const routineDocRef = getPublicDocRef(PUBLIC_ROUTINE_COLLECTION, PUBLIC_ROUTINE_DOC_ID);
+            const docSnap = await getDoc(routineDocRef);
+            
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                routineAdminTitleInput.value = data.title || '';
+                
+                if (data.exercises && Array.isArray(data.exercises)) {
+                    routineAdminContentTextarea.value = data.content || data.exercises.map(e => 
+                        `- ${e.name}, ${e.sets || 3}, ${e.reps || 10}`
+                    ).join('\n');
+                } else {
+                    routineAdminContentTextarea.value = '';
+                }
+            } else {
+                 routineAdminTitleInput.value = '';
+                 routineAdminContentTextarea.value = 'Aún no hay rutina configurada.';
+            }
+            qrCodeArea.classList.add('hidden');
+            
+            // 2. Cargar Lista de Clientes Registrados
+            await loadRegisteredUsersList();
+        }
+
+        async function saveGlobalRoutine() {
+            if (!db) return showMessage('Error: No se puede guardar la rutina.', 'bg-red-600');
+
+            const title = routineAdminTitleInput.value.trim();
+            const content = routineAdminContentTextarea.value.trim();
+            
+            if (!title || !content) {
+                return showMessage('El título y el contenido de la rutina son obligatorios.', 'bg-yellow-600');
+            }
+
+            const lines = content.split('\n').filter(line => line.trim().startsWith('-'));
+            const exercises = lines.map(line => {
+                const parts = line.replace(/^- /, '').split(',').map(p => p.trim());
+                return {
+                    name: parts[0] || 'Ejercicio',
+                    sets: parseInt(parts[1]) || null,
+                    reps: parseInt(parts[2]) || null
+                };
+            });
+
+            try {
+                const routineDocRef = getPublicDocRef(PUBLIC_ROUTINE_COLLECTION, PUBLIC_ROUTINE_DOC_ID);
+                await setDoc(routineDocRef, { 
+                    title: title, 
+                    content: content, 
+                    exercises: exercises,
+                    lastUpdated: new Date().getTime()
+                }, { merge: true });
+                
+                showMessage('Rutina Global guardada y actualizada para todos los clientes.', 'bg-green-600');
+            } catch (error) {
+                console.error("Error saving global routine:", error);
+                showMessage('Error al guardar la rutina global.', 'bg-red-600');
+            }
+        }
+        
+        async function registerNewUser() {
+            if (!db) return showMessage('Error: No se puede registrar sin conexión.', 'bg-red-600');
+            
+            const uid = newUserUIDInput.value.trim();
+            const name = newUserNameInput.value.trim();
+            
+            if (!uid || !name) {
+                return showMessage('El ID de Cliente (UID) y el Nombre son obligatorios.', 'bg-yellow-600');
+            }
+
+            try {
+                const userDocRef = getRegisteredUserDocRef(uid);
+                await setDoc(userDocRef, { name: name, role: 'user', createdAt: new Date().getTime() }, { merge: true });
+                
+                generateQRCode(uid, name); 
+
+                showMessage(`Cliente ${name} registrado con éxito. Código QR generado.`, 'bg-green-600');
+                
+                newUserUIDInput.value = '';
+                newUserNameInput.value = '';
+                await loadRegisteredUsersList();
+
+            } catch (error) {
+                console.error("Error registering new user:", error);
+                showMessage('Error al registrar al cliente.', 'bg-red-600');
+            }
+        }
+
+        async function loadRegisteredUsersList() {
+            if (!db) return;
+            registeredUsersListBody.innerHTML = '<tr id="loading-users-row"><td class="px-3 py-2 text-gray-400 italic" colspan="2">Cargando...</td></tr>';
+            
+            try {
+                const collectionRef = collection(db, 'artifacts', appId, REGISTERED_USERS_COLLECTION);
+                const q = query(collectionRef, where('role', '==', 'user'));
+                const querySnapshot = await getDocs(q);
+                
+                registeredUsersListBody.innerHTML = '';
+                
+                if (querySnapshot.empty) {
+                    registeredUsersListBody.innerHTML = '<tr><td class="px-3 py-2 text-gray-400 italic" colspan="2">No hay clientes registrados.</td></tr>';
+                    return;
+                }
+                
+                querySnapshot.forEach(doc => {
+                    const data = doc.data();
+                    const row = document.createElement('tr');
+                    row.className = 'hover:bg-gray-600/50';
+                    row.innerHTML = `
+                        <td class="px-3 py-2 font-medium text-white">${data.name || 'Sin Nombre'}</td>
+                        <td class="px-3 py-2 text-gray-400 text-sm break-all">${doc.id}</td>
+                    `;
+                    registeredUsersListBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error loading user list:", error);
+                registeredUsersListBody.innerHTML = '<tr><td class="px-3 py-2 text-red-400 italic" colspan="2">Error al cargar la lista.</td></tr>';
+            }
+        }
+
+        // --- Lógica de Metas ---
+        
+        const goalCaloriesDailyInput = document.getElementById('goal-calories-daily');
+        const goalCaloriesWeeklyInput = document.getElementById('goal-calories-weekly');
+        const dailyGoalText = document.getElementById('daily-goal-text');
+        const weeklyGoalText = document.getElementById('weekly-goal-text');
+        
+        async function loadGoals() {
+            if (!db || !userId) return;
+            try {
+                const docRef = getUserDocRef(GOALS_COLLECTION, GOALS_DOC_ID);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    dailyGoal = data.daily || 0;
+                    weeklyGoal = data.weekly || 0;
+                    goalCaloriesDailyInput.value = dailyGoal;
+                    goalCaloriesWeeklyInput.value = weeklyGoal;
+                    
+                    dailyGoalText.textContent = `Meta: ${dailyGoal.toLocaleString()} kcal`;
+                    weeklyGoalText.textContent = `Meta: ${weeklyGoal.toLocaleString()} kcal`;
+                }
+            } catch (error) {
+                console.error("Error loading goals:", error);
+            }
+        }
+
+        async function saveGoals() {
+            if (!db || !userId) return showMessage('Error: No se puede guardar sin conexión.', 'bg-red-600');
+
+            const daily = parseInt(goalCaloriesDailyInput.value) || 0;
+            const weekly = parseInt(goalCaloriesWeeklyInput.value) || 0;
+            
+            if (daily <= 0 || weekly <= 0) return showMessage('Las metas deben ser mayores a 0.', 'bg-yellow-600');
+
+            try {
+                const docRef = getUserDocRef(GOALS_COLLECTION, GOALS_DOC_ID);
+                await setDoc(docRef, { daily: daily, weekly: weekly, lastUpdated: new Date().getTime() }, { merge: true }); 
+                
+                dailyGoal = daily;
+                weeklyGoal = weekly;
+                dailyGoalText.textContent = `Meta: ${dailyGoal.toLocaleString()} kcal`;
+                weeklyGoalText.textContent = `Meta: ${weeklyGoal.toLocaleString()} kcal`;
+                loadMealRecords(); 
+                
+                showMessage('Metas guardadas exitosamente.', 'bg-green-600');
+            } catch (error) {
+                console.error("Error saving goals:", error);
+                showMessage('Error al guardar las metas.', 'bg-red-600');
+            }
+        }
+
+        // --- Lógica de Rutinas ---
+        const routineTitleElement = document.getElementById('routine-title');
+        const exercisesListContainer = document.getElementById('exercises-list');
+        const saveRoutineBtn = document.getElementById('save-daily-routine-btn');
+        const routineDateElement = document.getElementById('routine-date');
+
+
+        function renderRoutine(data) {
+            exercisesListContainer.innerHTML = '';
+            
+            const exercises = data.exercises || [];
+            
+            if (exercises.length === 0) {
+                exercisesListContainer.innerHTML = '<p class="text-yellow-400">No hay ejercicios configurados en la rutina actual.</p>';
+                saveRoutineBtn.disabled = true;
+                return;
+            }
+
+            const today = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+            routineDateElement.textContent = `Fecha: ${today}`;
+            
+            exercises.forEach((exercise, index) => {
+                const exerciseDiv = document.createElement('div');
+                exerciseDiv.className = 'bg-gray-700 p-4 rounded-xl shadow-md border border-gray-600';
+                exerciseDiv.innerHTML = `
+                    <h5 class="text-xl font-bold text-white mb-3">${index + 1}. ${exercise.name || 'Ejercicio sin nombre'}</h5>
+                    
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div>
+                            <label for="weight-${index}" class="block text-sm font-medium text-gray-400">Peso Utilizado (kg)</label>
+                            <input type="number" step="0.5" min="0" id="weight-${index}" data-exercise-name="${exercise.name}" 
+                                class="w-full p-2 mt-1 text-gray-100 bg-gray-900 rounded-lg focus:ring-cyan-400 focus:border-cyan-400 border border-gray-600 text-center" placeholder="0">
+                        </div>
+                        <div>
+                            <label for="sets-${index}" class="block text-sm font-medium text-gray-400">Series</label>
+                            <input type="number" min="1" id="sets-${index}" 
+                                class="w-full p-2 mt-1 text-gray-100 bg-gray-900 rounded-lg focus:ring-cyan-400 focus:border-cyan-400 border border-gray-600 text-center" placeholder="3">
+                        </div>
+                        <div>
+                            <label for="reps-${index}" class="block text-sm font-medium text-gray-400">Repeticiones</label>
+                            <input type="number" min="1" id="reps-${index}" 
+                                class="w-full p-2 mt-1 text-gray-100 bg-gray-900 rounded-lg focus:ring-cyan-400 focus:border-cyan-400 border border-gray-600 text-center" placeholder="10">
+                        </div>
+                    </div>
+                `;
+                exercisesListContainer.appendChild(exerciseDiv);
+            });
+            
+            saveRoutineBtn.disabled = false;
+        }
+
+
+        function loadRoutines() {
+            if (!db || !userId) return;
+            
+            const docRef = getPublicDocRef(PUBLIC_ROUTINE_COLLECTION, PUBLIC_ROUTINE_DOC_ID);
+            
+            onSnapshot(docRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    routineTitleElement.textContent = data.title || 'Rutina Sin Título';
+                    renderRoutine(data); 
+                } else {
+                    routineTitleElement.textContent = 'Rutina No Disponible';
+                    exercisesListContainer.innerHTML = '<p class="text-red-400">El administrador aún no ha configurado la rutina global.</p>';
+                    saveRoutineBtn.disabled = true;
+                }
+            }, (error) => {
+                console.error("Error loading public routine data:", error);
+                routineTitleElement.textContent = 'Error de Carga';
+                exercisesListContainer.innerHTML = '<p class="text-red-400">Ocurrió un error al intentar cargar la rutina.</p>';
+            });
+        }
+
+        async function saveDailyRoutineRecord() {
+            if (!db || !userId) {
+                return showMessage('Error: Autenticación no completa.', 'bg-red-600');
+            }
+            
+            saveRoutineBtn.disabled = true;
+            showMessage('Registrando entrenamiento diario...', 'bg-cyan-800');
+
+            const exerciseRecords = [];
+            
+            const exerciseContainers = exercisesListContainer.querySelectorAll('.bg-gray-700');
+            
+            exerciseContainers.forEach((container, index) => {
+                const weightInput = container.querySelector(`#weight-${index}`);
+                const setsInput = container.querySelector(`#sets-${index}`);
+                const repsInput = container.querySelector(`#reps-${index}`);
+                const exerciseName = container.querySelector('h5').textContent.replace(/^\d+\.\s*/, '').trim();
+
+                const weight = parseFloat(weightInput.value) || 0;
+                const sets = parseInt(setsInput.value) || 0;
+                const reps = parseInt(repsInput.value) || 0;
+                
+                if (weight > 0 || sets > 0 || reps > 0) {
+                    exerciseRecords.push({
+                        name: exerciseName,
+                        weight: weight,
+                        sets: sets,
+                        reps: reps
+                    });
+                }
+            });
+
+            if (exerciseRecords.length === 0) {
+                saveRoutineBtn.disabled = false;
+                return showMessage('No hay progreso para registrar. Ingresa al menos un valor.', 'bg-yellow-600');
+            }
+
+            try {
+                const record = {
+                    routineTitle: routineTitleElement.textContent,
+                    date: new Date().toLocaleDateString('es-ES'),
+                    timestamp: new Date().getTime(),
+                    exercises: exerciseRecords
+                };
+                
+                const collectionRef = getDailyRoutineRecordsCollectionRef();
+                await addDoc(collectionRef, record);
+                
+                showMessage(`Progreso de ${exerciseRecords.length} ejercicios registrado.`, 'bg-green-600');
+                
+                // Limpiar inputs después de guardar
+                exerciseContainers.forEach((container, index) => {
+                    container.querySelector(`#weight-${index}`).value = '';
+                    container.querySelector(`#sets-${index}`).value = '';
+                    container.querySelector(`#reps-${index}`).value = '';
+                });
+                
+            } catch (error) {
+                console.error("Error saving daily routine record:", error);
+                showMessage('Error al registrar el entrenamiento diario.', 'bg-red-600');
+            } finally {
+                saveRoutineBtn.disabled = false;
+            }
+        }
+
+
+        // --- Lógica de Medidas ---
+        const MEASUREMENT_FIELDS = [
+            'weight', 'neck', 'shoulder', 'chest', 'arm', 'forearm', 'waist', 
+            'abdomen', 'hips', 'thigh', 'calf'
+        ];
+
+        async function loadMeasurements() {
+            if (!db || !userId) return;
+
+            try {
+                const docRef = getUserDocRef(MEASUREMENTS_COLLECTION, MEASUREMENTS_DOC_ID);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    MEASUREMENT_FIELDS.forEach(field => {
+                        const input = document.getElementById(`input-${field}`);
+                        if (input && data[field] !== undefined) {
+                            input.value = data[field];
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error("Error loading measurements:", error);
+            }
+        }
+
+        async function saveMeasurements() {
+            if (!db || !userId) return showMessage('Error: No se puede guardar sin conexión.', 'bg-red-600');
+
+            const measurements = {};
+            let isValid = true;
+            let hasNewValue = false;
+
+            MEASUREMENT_FIELDS.forEach(field => {
+                const input = document.getElementById(`input-${field}`);
+                let value = parseFloat(input.value);
+                
+                if (input.value.trim() !== '' && isNaN(value)) {
+                    isValid = false;
+                    return;
+                }
+                measurements[field] = isNaN(value) ? null : parseFloat(value.toFixed(2));
+                if (!isNaN(value)) {
+                    hasNewValue = true;
+                }
+            });
+
+            if (!isValid) return showMessage('Por favor, ingresa solo números válidos.', 'bg-yellow-600');
+            if (!hasNewValue) return showMessage('Ingresa al menos un valor de medida antes de guardar.', 'bg-yellow-600');
+            
+            showMessage('Guardando medidas corporales...', 'bg-cyan-800');
+
+            try {
+                const timestamp = new Date().getTime();
+                
+                // 1. Actualizar el documento principal
+                const docRef = getUserDocRef(MEASUREMENTS_COLLECTION, MEASUREMENTS_DOC_ID);
+                await setDoc(docRef, { ...measurements, lastUpdated: timestamp }, { merge: true });
+
+                // 2. Guardar registro inmutable en la colección de historial
+                const record = {
+                    ...measurements,
+                    timestamp: timestamp
+                };
+                const collectionRef = getMeasurementsRecordsCollectionRef();
+                await addDoc(collectionRef, record);
+                
+                showMessage('Medidas guardadas exitosamente y registro histórico creado.', 'bg-green-600');
+            } catch (error) {
+                console.error("Error saving measurements:", error);
+                showMessage('Error al guardar las medidas.', 'bg-red-600');
+            }
+        }
+
+        // --- Lógica de Resultados y Gráficos ---
+        
+        let weightChartInstance = null; 
+
+        function renderWeightChart(records) {
+            const chartData = records
+                .filter(r => r.weight !== null && r.weight !== undefined)
+                .sort((a, b) => a.timestamp - b.timestamp);
+
+            const labels = chartData.map(r => new Date(r.timestamp).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' }));
+            const dataPoints = chartData.map(r => r.weight);
+
+            const ctx = document.getElementById('weight-chart').getContext('2d');
+
+            if (weightChartInstance) {
+                weightChartInstance.destroy(); 
+            }
+
+            if (dataPoints.length < 1) {
+                 ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                 return; 
+            }
+
+            weightChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Peso Corporal (kg)',
+                        data: dataPoints,
+                        borderColor: '#22d3ee',
+                        backgroundColor: 'rgba(34, 211, 238, 0.1)',
+                        tension: 0.3,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: 'Peso (kg)',
+                                color: '#9ca3af'
+                            },
+                            grid: { color: '#4b5563' },
+                            ticks: { color: '#9ca3af' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#9ca3af' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: false }
+                    }
+                }
+            });
+        }
+
+        function renderMeasurementsComparison(records) {
+            const comparisonBody = document.getElementById('comparison-body');
+            comparisonBody.innerHTML = '';
+            
+            if (records.length < 2) {
+                 document.getElementById('no-measurements-data').classList.remove('hidden');
+                 return;
+            }
+            document.getElementById('no-measurements-data').classList.add('hidden');
+
+            const sortedRecords = records.sort((a, b) => a.timestamp - b.timestamp);
+            const initial = sortedRecords[0];
+            const latest = sortedRecords[sortedRecords.length - 1];
+
+            MEASUREMENT_FIELDS.forEach(field => {
+                const initialValue = initial[field] || null;
+                const latestValue = latest[field] || null;
+
+                if (initialValue !== null && latestValue !== null) {
+                    
+                    const startValue = initialValue;
+                    const endValue = latestValue;
+                    
+                    const diff = endValue - startValue;
+                    const unit = (field === 'weight') ? 'kg' : 'cm';
+                    const diffText = diff === 0 ? '--' : `${diff.toFixed(2)} ${unit}`;
+                    
+                    let colorClass = 'text-gray-300';
+                    const isLossMetric = ['weight', 'waist', 'abdomen', 'hips'].includes(field);
+                    
+                    if (diff !== 0) {
+                        if (isLossMetric) {
+                            colorClass = diff < 0 ? 'text-green-400' : 'text-red-400';
+                        } else {
+                            colorClass = diff > 0 ? 'text-green-400' : 'text-red-400';
+                        }
+                    }
+
+                    const inputElement = document.getElementById(`input-${field}`);
+                    const fieldName = inputElement ? inputElement.previousElementSibling.textContent : field.charAt(0).toUpperCase() + field.slice(1);
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="px-3 py-2 font-medium text-white">${fieldName}</td>
+                        <td class="px-3 py-2 text-gray-400">${startValue.toFixed(2)} ${unit}</td>
+                        <td class="px-3 py-2 text-white">${endValue.toFixed(2)} ${unit}</td>
+                        <td class="px-3 py-2 font-bold ${colorClass}">${diffText}</td>
+                    `;
+                    comparisonBody.appendChild(row);
+                }
+            });
+        }
+
+        function renderCaloricGoalsTable(dailyRecords, goal) {
+            const caloricGoalsBody = document.getElementById('caloric-goals-body');
+            caloricGoalsBody.innerHTML = '';
+            
+            if (dailyRecords.length === 0) {
+                document.getElementById('no-caloric-data').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('no-caloric-data').classList.add('hidden');
+
+            const tableData = [];
+            const consumptionByDate = {};
+            
+            dailyRecords.forEach(record => {
+                 const date = new Date(record.timestamp);
+                 const dateKey = date.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' });
+                 if (!consumptionByDate[dateKey]) {
+                     consumptionByDate[dateKey] = 0;
+                 }
+                 consumptionByDate[dateKey] += record.calories || 0;
+            });
+            
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const dateKey = date.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' });
+                const consumption = consumptionByDate[dateKey] || 0;
+                const dayName = date.toLocaleDateString('es-ES', { weekday: 'short' });
+                
+                tableData.push({
+                    day: dayName,
+                    date: dateKey,
+                    consumption: consumption
+                });
+            }
+
+            
+            tableData.forEach(item => {
+                const isOver = item.consumption > goal && goal > 0;
+                const statusText = item.consumption === 0 ? 'Sin registro' : (goal === 0 ? 'Meta no definida' : (isOver ? '¡Exceso! 🔴' : 'Bajo control ✅'));
+                
+                let statusClass = 'text-gray-400';
+                if (item.consumption > 0) {
+                    if (goal > 0) {
+                        statusClass = isOver ? 'text-red-400 font-bold' : 'text-green-400';
+                    } else {
+                        statusClass = 'text-yellow-400';
+                    }
+                }
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-3 py-2 text-white">${item.day} (${item.date})</td>
+                    <td class="px-3 py-2 text-cyan-400">${item.consumption.toFixed(0)} kcal</td>
+                    <td class="px-3 py-2 text-gray-400">${goal > 0 ? goal.toLocaleString() : '--'} kcal</td>
+                    <td class="px-3 py-2 ${statusClass}">${statusText}</td>
+                `;
+                caloricGoalsBody.appendChild(row);
+            });
+        }
+
+
+        async function loadResults() {
+            if (!db || !userId) return showMessage('Error: Sesión no activa.', 'bg-red-600');
+
+            showMessage('Cargando historial de progreso...', 'bg-gray-600');
+
+            try {
+                // 1. Obtener Historial de Medidas COMPLETAS
+                const recordsCollectionRef = getMeasurementsRecordsCollectionRef();
+                const recordsSnapshot = await getDocs(query(recordsCollectionRef));
+                
+                const historicalRecords = [];
+                recordsSnapshot.forEach(doc => {
+                    historicalRecords.push(doc.data());
+                });
+                
+                // 2. Renderizar Resultados de Medidas
+                if (historicalRecords.length > 0) {
+                    renderWeightChart(historicalRecords); 
+                    renderMeasurementsComparison(historicalRecords); 
+                } else {
+                     document.getElementById('no-measurements-data').classList.remove('hidden');
+                     if (weightChartInstance) weightChartInstance.destroy();
+                }
+                
+                
+                // 3. Obtener Historial de Registros de Comida
+                const mealsCollectionRef = getMealRecordsCollectionRef();
+                const mealsSnapshot = await getDocs(query(mealsCollectionRef));
+                const mealRecords = [];
+                mealsSnapshot.forEach(doc => mealRecords.push(doc.data()));
+
+                // 4. Obtener Metas Calóricas
+                const goalsDocRef = getUserDocRef(GOALS_COLLECTION, GOALS_DOC_ID);
+                const goalsSnap = await getDoc(goalsDocRef);
+                const dailyCaloricGoal = goalsSnap.exists() ? (goalsSnap.data().daily || 0) : 0;
+                
+                renderCaloricGoalsTable(mealRecords, dailyCaloricGoal);
+
+                showMessage('Resultados y progreso cargados.', 'bg-green-600');
+
+            } catch (error) {
+                console.error("Error al cargar resultados:", error);
+                showMessage('Error al cargar datos de resultados.', 'bg-red-600');
+            }
+        }
+
+
+        // --- Lógica de Nutrición (IA) y Seguimiento ---
+        const mealPreview = document.getElementById('meal-preview');
+        const mealResultsBox = document.getElementById('meal-results-box');
+        const estimatedCalories = document.getElementById('estimated-calories');
+        const estimatedProtein = document.getElementById('estimated-protein');
+        const mealNameElement = document.getElementById('meal-name');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const dailyRecordsList = document.getElementById('daily-records-list');
+        const weeklyCaloriesTotal = document.getElementById('weekly-calories-total');
+        const weeklyProteinTotal = document.getElementById('weekly-protein-total');
+        const dailyConsumedText = document.getElementById('daily-consumed');
+        const weeklyConsumedText = document.getElementById('weekly-consumed'); 
+        const dailyAlert = document.getElementById('daily-alert');
+        const dailyTrackingBox = document.getElementById('daily-tracking-box');
+
+        function getTodayStartTimestamp() {
+            const start = new Date();
+            start.setHours(0, 0, 0, 0);
+            return start.getTime();
+        }
+
+        function getWeekStartTimestamp() {
+            const now = new Date();
+            const startOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
+            startOfWeek.setHours(0, 0, 0, 0);
+            return startOfWeek.getTime();
+        }
+
+        function updateGoalTrackingUI(dailyCalories, weeklyCalories) { 
+            const consumed = dailyCalories;
+            const goal = dailyGoal || 0;
+            
+            weeklyConsumedText.textContent = `${weeklyCalories.toFixed(0)} kcal`;
+
+            dailyTrackingBox.classList.remove('border-red-500', 'border-cyan-500', 'border-yellow-500', 'border-green-500');
+            dailyAlert.className = 'text-sm font-bold mt-2';
+            dailyAlert.textContent = '';
+            
+            if (goal > 0) {
+                if (consumed > goal) {
+                    const excess = consumed - goal;
+                    dailyTrackingBox.classList.add('border-red-500');
+                    dailyAlert.classList.add('text-red-500');
+                    dailyAlert.textContent = `¡ALERTA! Exceso de ${excess.toFixed(0)} kcal.`;
+                } else if (consumed >= goal) {
+                    dailyTrackingBox.classList.add('border-green-500');
+                    dailyAlert.classList.add('text-green-500');
+                    dailyAlert.textContent = `¡Meta Diaria Alcanzada!`;
+                } else {
+                    dailyTrackingBox.classList.add('border-cyan-500');
+                    const remaining = goal - consumed;
+                    dailyAlert.classList.add('text-cyan-400');
+                    dailyAlert.textContent = `Faltan ${remaining.toFixed(0)} kcal.`;
+                }
+            } else {
+                dailyTrackingBox.classList.add('border-yellow-500');
+                dailyAlert.classList.add('text-yellow-500');
+                dailyAlert.textContent = 'Establece tu meta diaria en la sección "Metas".';
+            }
+        }
+
+        function loadMealRecords() {
+            if (!db || !userId) return;
+
+            const collectionRef = getMealRecordsCollectionRef();
+            const q = query(collectionRef);
+
+            onSnapshot(q, (snapshot) => {
+                let dailyCalories = 0;
+                let weeklyCalories = 0;
+                let weeklyProtein = 0;
+                const todayTimestamp = getTodayStartTimestamp();
+                const weekTimestamp = getWeekStartTimestamp();
+                dailyRecordsList.innerHTML = '';
+                const todayRecords = [];
+                
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const timestamp = data.timestamp || 0; 
+                    const calories = data.calories || 0;
+                    const protein = data.protein || 0;
+
+                    if (timestamp >= weekTimestamp) {
+                        weeklyCalories += calories;
+                        weeklyProtein += protein;
+                    }
+
+                    if (timestamp >= todayTimestamp) {
+                        dailyCalories += calories;
+                        todayRecords.push(data);
+                    }
+                });
+
+                todayRecords.sort((a, b) => b.timestamp - a.timestamp);
+
+                if (todayRecords.length > 0) {
+                    todayRecords.forEach(data => {
+                        const date = new Date(data.timestamp);
+                        const time = date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                        
+                        dailyRecordsList.innerHTML += `
+                            <div class="p-3 bg-gray-800 rounded-lg border-l-4 border-cyan-400">
+                                <p class="text-sm font-bold text-white">${data.mealName || 'Comida Registrada'}</p>
+                                <p class="text-xs text-gray-400">${time}</p>
+                                <p class="text-sm text-cyan-400">${(data.calories || 0).toFixed(0)} kcal | ${(data.protein || 0).toFixed(1)} g proteína</p>
+                            </div>
+                        `;
+                    });
+                } else {
+                    dailyRecordsList.innerHTML = '<p class="text-gray-400">No hay registros para hoy.</p>';
+                }
+
+                dailyConsumedText.textContent = `${dailyCalories.toFixed(0)} kcal`;
+                weeklyCaloriesTotal.textContent = weeklyCalories.toFixed(0);
+                weeklyProteinTotal.textContent = weeklyProtein.toFixed(1);
+                
+                updateGoalTrackingUI(dailyCalories, weeklyCalories);
+
+            }, (error) => {
+                console.error("Error fetching meal records:", error);
+                showMessage('Error al cargar registros de comidas.', 'bg-red-600');
+            });
+        }
+
+        async function analyzeMealWithGemini(base64Image, mimeType) {
+            loadingOverlay.classList.remove('hidden');
+            mealResultsBox.classList.add('hidden');
+            
+            if (!API_KEY || API_KEY === "") {
+                loadingOverlay.classList.add('hidden');
+                return showMessage('Error: La API Key de Gemini no está configurada.', 'bg-red-600');
+            }
+
+            const userPrompt = "Analiza la imagen de comida. Estima las calorías totales (integer) y los gramos de proteína (float con un decimal). Proporciona solo la respuesta en formato JSON. El nombre de la comida debe ser conciso.";
+            
+            const payload = {
+                contents: [
+                    {
+                        role: "user",
+                        parts: [
+                            { text: userPrompt },
+                            {
+                                inlineData: {
+                                    mimeType: mimeType, 
+                                    data: base64Image
+                                }
+                            }
+                        ]
+                    }
+                ],
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            "mealName": { "type": "STRING", "description": "Nombre conciso de la comida." },
+                            "calories": { "type": "NUMBER", "description": "Estimación de calorías totales (entero)." },
+                            "protein": { "type": "NUMBER", "description": "Estimación de proteínas en gramos (flotante con un decimal)." }
+                        },
+                        "propertyOrdering": ["mealName", "calories", "protein"]
+                    }
+                }
+            };
+
+            try {
+                const response = await fetch(GEMINI_API_URL + API_KEY, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                const result = await response.json();
+                const jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                
+                if (jsonText) {
+                    const parsedJson = JSON.parse(jsonText);
+                    currentMealData = {
+                        mealName: parsedJson.mealName || 'Comida Analizada',
+                        calories: parseFloat(parsedJson.calories) || 0, 
+                        protein: parseFloat(parsedJson.protein) || 0 
+                    };
+                    
+                    mealNameElement.textContent = `Comida: ${currentMealData.mealName}`;
+                    estimatedCalories.textContent = currentMealData.calories.toFixed(0);
+                    estimatedProtein.textContent = currentMealData.protein.toFixed(1);
+                    mealResultsBox.classList.remove('hidden');
+                    showMessage('Análisis de IA completado.', 'bg-green-600');
+                    
+                } else {
+                    throw new Error("Respuesta de IA vacía o mal formada.");
+                }
+
+            } catch (error) {
+                console.error("Error al llamar a la API de Gemini:", error);
+                showMessage('Error en el análisis de IA. Intenta con otra foto.', 'bg-red-600');
+                mealResultsBox.classList.add('hidden');
+            } finally {
+                loadingOverlay.classList.add('hidden');
+            }
+        }
+
+        async function saveMealRecord() {
+            if (!db || !userId) return showMessage('Error: No se puede guardar sin conexión.', 'bg-red-600');
+            if (!currentMealData) return showMessage('Primero analiza una foto de comida.', 'bg-yellow-600');
+
+            try {
+                const mealRecord = {
+                    ...currentMealData,
+                    timestamp: new Date().getTime(),
+                };
+                
+                const collectionRef = getMealRecordsCollectionRef();
+                await addDoc(collectionRef, mealRecord);
+                
+                showMessage('Comida registrada exitosamente.', 'bg-green-600');
+                
+                currentMealData = null;
+                mealResultsBox.classList.add('hidden');
+                mealPreview.src = "https://placehold.co/300x200/0f172a/06b6d4?text=CARGAR%20COMIDA";
+                
+            } catch (error) {
+                console.error("Error saving meal record:", error);
+                showMessage('Error al registrar la comida.', 'bg-red-600');
+            }
+        }
+
+        // --- Lógica de Workout ---
+        const workoutTypeSelect = document.getElementById('workout-type');
+        const caloriesSpentInput = document.getElementById('calories-spent');
+        const startScanBtn = document.getElementById('start-scan-btn');
+        const readerContainer = document.getElementById('reader-container');
+        const scanStatusText = document.getElementById('scan-status');
+        const scannedClientUIDText = document.getElementById('scanned-client-uid');
+        const dailyWorkoutRecordsContainer = document.getElementById('daily-workout-records');
+        const totalCaloriesTodaySpan = document.getElementById('total-calories-today');
+
+        let html5QrCode = null;
+        let lastScannedUID = null;
+
+        const WORKOUT_MODALITIES = [
+            "K-Box", "CrossFit", "Hi-Box", "Musculación", "Rutina"
+        ];
+
+        function setupWorkoutView() {
+            if (workoutTypeSelect.options.length <= 1) {
+                WORKOUT_MODALITIES.forEach(modality => {
+                    const option = document.createElement('option');
+                    option.value = modality;
+                    option.textContent = modality;
+                    workoutTypeSelect.appendChild(option);
+                });
+            }
+        }
+        
+        function startQRScanner() {
+            const modality = workoutTypeSelect.value;
+            const calories = parseInt(caloriesSpentInput.value);
+
+            if (!modality) return showMessage('Selecciona una modalidad de clase antes de escanear.', 'bg-yellow-600');
+            if (isNaN(calories) || calories <= 0) return showMessage('Ingresa las calorías gastadas antes de escanear.', 'bg-yellow-600');
+            
+            if (html5QrCode && html5QrCode.isScanning) {
+                html5QrCode.stop().then(() => console.log("Escáner detenido."));
+            }
+
+            readerContainer.style.display = 'block';
+            scanStatusText.classList.remove('hidden');
+            scannedClientUIDText.classList.add('hidden');
+            lastScannedUID = null;
+            startScanBtn.textContent = 'Detener Escáner';
+            
+            html5QrCode = new Html5Qrcode("reader-container");
+            
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+            html5QrCode.start(
+                { facingMode: "environment" }, 
+                config,
+                onScanSuccess,
+                onScanError
+            ).catch(err => {
+                 console.error("Error al iniciar el escáner:", err);
+                 showMessage("Error: No se pudo acceder a la cámara. Asegúrate de tener permisos.", 'bg-red-600');
+                 stopQRScanner();
+            });
+        }
+        
+        function stopQRScanner() {
+            if (html5QrCode && html5QrCode.isScanning) {
+                html5QrCode.stop().then(() => {
+                    readerContainer.style.display = 'none';
+                    scanStatusText.classList.add('hidden');
+                    startScanBtn.textContent = 'Escanear Código QR del Cliente';
+                }).catch(err => console.error("Error al detener el escáner:", err));
+            } else {
+                 readerContainer.style.display = 'none';
+                 scanStatusText.classList.add('hidden');
+                 startScanBtn.textContent = 'Escanear Código QR del Cliente';
+            }
+        }
+
+        function onScanSuccess(decodedText, decodedResult) {
+            if (decodedText && decodedText !== lastScannedUID) {
+                
+                lastScannedUID = decodedText;
+                
+                scannedClientUIDText.textContent = `Cliente Escaneado: ${lastScannedUID.substring(0, 8)}...`;
+                scannedClientUIDText.classList.remove('hidden');
+                
+                showMessage(`Código de cliente (${lastScannedUID.substring(0, 8)}...) capturado. Guardando registro...`, 'bg-green-600');
+                
+                saveScannedWorkout(lastScannedUID);
+
+                html5QrCode.stop();
+            }
+        }
+        
+        function onScanError(errorMessage) {
+            scanStatusText.textContent = 'Apuntando cámara. Escanee el UID del cliente.';
+        }
+        
+        async function saveScannedWorkout(clientUID) {
+            const modality = workoutTypeSelect.value;
+            const calories = parseInt(caloriesSpentInput.value);
+
+            if (!db || !clientUID || !modality || isNaN(calories) || calories <= 0) {
+                 stopQRScanner();
+                 return showMessage('Error: Faltan datos para guardar el registro.', 'bg-red-600');
+            }
+
+            try {
+                const collectionRef = getWorkoutRecordsCollectionRef(clientUID);
+                
+                const record = {
+                    modality: modality,
+                    calories: calories,
+                    timestamp: new Date().getTime(),
+                    recordedByAdmin: userId 
+                };
+
+                await addDoc(collectionRef, record);
+                
+                showMessage(`✅ Sesión de ${modality} (${calories} kcal) registrada para ${clientUID.substring(0, 8)}...`, 'bg-green-600');
+                
+                caloriesSpentInput.value = ''; 
+                stopQRScanner(); 
+                loadWorkoutRecords();
+                
+            } catch (error) {
+                console.error("Error saving workout record:", error);
+                showMessage('Error al guardar el registro del workout en el cliente.', 'bg-red-600');
+                stopQRScanner();
+            }
+        }
+
+        function loadWorkoutRecords() {
+            if (!db || !userId) return;
+
+            setupWorkoutView();
+            dailyWorkoutRecordsContainer.innerHTML = '<p class="text-gray-400 italic">Cargando registros...</p>';
+            
+            const collectionRef = getWorkoutRecordsCollectionRef();
+            const todayTimestamp = getTodayStartTimestamp();
+            
+            onSnapshot(query(collectionRef, where('timestamp', '>=', todayTimestamp)), (snapshot) => {
+                dailyWorkoutRecordsContainer.innerHTML = '';
+                let totalCalories = 0;
+                
+                if (snapshot.empty) {
+                    dailyWorkoutRecordsContainer.innerHTML = '<p class="text-gray-400 italic">No hay sesiones registradas hoy.</p>';
+                    totalCaloriesTodaySpan.textContent = '0 kcal';
+                    return;
+                }
+                
+                const records = [];
+                snapshot.forEach(doc => {
+                    records.push(doc.data());
+                    totalCalories += doc.data().calories || 0;
+                });
+                
+                records.sort((a, b) => b.timestamp - a.timestamp);
+                
+                records.forEach(record => {
+                    const time = new Date(record.timestamp).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                    
+                    dailyWorkoutRecordsContainer.innerHTML += `
+                        <div class="p-2 bg-gray-800 rounded-lg border-l-4 border-red-400 flex justify-between items-center">
+                            <div>
+                                <p class="text-sm font-bold text-white">${record.modality}</p>
+                                <p class="text-xs text-gray-400">${time}</p>
+                            </div>
+                            <p class="text-lg font-bold text-red-400">${record.calories} kcal</p>
+                        </div>
+                    `;
+                });
+                
+                totalCaloriesTodaySpan.textContent = `${totalCalories.toFixed(0)} kcal`;
+                
+            }, (error) => {
+                console.error("Error loading workout records:", error);
+                dailyWorkoutRecordsContainer.innerHTML = '<p class="text-red-400 italic">Error al cargar registros.</p>';
+            });
+        }
+        
+        // --- Setup Event Listeners ---
+
+        function setupNavListeners() {
+            document.getElementById('nav-image-upload-view').addEventListener('click', (e) => { e.preventDefault(); setActiveView('image-upload-view'); });
+            document.getElementById('nav-routines-view').addEventListener('click', (e) => { e.preventDefault(); setActiveView('routines-view'); });
+            document.getElementById('nav-workout-view').addEventListener('click', (e) => { e.preventDefault(); setActiveView('workout-view'); });
+            document.getElementById('nav-measurements-view').addEventListener('click', (e) => { e.preventDefault(); setActiveView('measurements-view'); });
+            document.getElementById('nav-results-view').addEventListener('click', (e) => { e.preventDefault(); setActiveView('results-view'); }); 
+            document.getElementById('nav-nutrition-view').addEventListener('click', (e) => { e.preventDefault(); setActiveView('nutrition-view'); });
+            document.getElementById('nav-goals-view').addEventListener('click', (e) => { e.preventDefault(); setActiveView('goals-view'); });
+            document.getElementById('nav-admin-view').addEventListener('click', (e) => { e.preventDefault(); setActiveView('admin-view'); });
+        }
+
+        function setupEventListeners() {
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('sidebar-visible');
+                if (sidebar.classList.contains('sidebar-visible')) {
+                    mainContent.addEventListener('click', closeSidebarOnMobile);
+                } else {
+                    mainContent.removeEventListener('click', closeSidebarOnMobile);
+                }
+            });
+
+            const uploadBtnOverlay = document.getElementById('upload-btn-overlay');
+            const userImage = document.getElementById('user-image');
+
+            uploadBtnOverlay.addEventListener('click', () => {
+                motivationFileUpload.click();
+            });
+
+            motivationFileUpload.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        userImage.src = e.target.result;
+                        showMessage('Foto de motivación cargada.', 'bg-green-600');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            const capturePhotoBtn = document.getElementById('capture-photo-btn');
+            const browsePhotoBtn = document.getElementById('browse-photo-btn');
+            const saveMealBtn = document.getElementById('save-meal-btn');
+
+            capturePhotoBtn.addEventListener('click', () => {
+                mealFileUpload.setAttribute('capture', 'environment');
+                mealFileUpload.click();
+            });
+
+            browsePhotoBtn.addEventListener('click', () => {
+                mealFileUpload.removeAttribute('capture');
+                mealFileUpload.click();
+            });
+
+            mealFileUpload.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        mealPreview.src = e.target.result;
+                        
+                        const dataUrl = e.target.result;
+                        const parts = dataUrl.split(',');
+                        const base64Image = parts[1];
+                        
+                        const mimeTypeMatch = parts[0].match(/:(.*?);/);
+                        const mimeType = mimeTypeMatch ? mimeTypeMatch[1] : 'image/jpeg';
+                        
+                        analyzeMealWithGemini(base64Image, mimeType);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            saveMealBtn.addEventListener('click', saveMealRecord);
+
+            document.getElementById('save-measurements-btn').addEventListener('click', saveMeasurements);
+            document.getElementById('save-goals-btn').addEventListener('click', saveGoals);
+            
+            document.getElementById('save-daily-routine-btn').addEventListener('click', saveDailyRoutineRecord);
+            
+            const registerNewUserBtn = document.getElementById('register-new-user-btn');
+            if (registerNewUserBtn) {
+                registerNewUserBtn.addEventListener('click', registerNewUser);
+            }
+
+            const saveGlobalRoutineBtn = document.getElementById('save-global-routine-btn');
+            if (saveGlobalRoutineBtn) {
+                saveGlobalRoutineBtn.addEventListener('click', saveGlobalRoutine);
+            }
+
+            // --- Evento de Workout (Escáner) ---
+            startScanBtn.addEventListener('click', () => {
+                if (html5QrCode && html5QrCode.isScanning) {
+                    stopQRScanner();
+                } else {
+                    startQRScanner();
+                }
+            });
+        }
+        
+        window.onload = initFirebaseAndAuth;
+
+    </script>
+</body>
+</html>
