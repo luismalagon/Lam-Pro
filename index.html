@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -16,6 +16,7 @@
     
     <link rel="manifest" href="manifest.json"> 
     <link rel="apple-touch-icon" href="apple-touch-icon.png"> 
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body {
@@ -1908,6 +1909,19 @@
                 } else {
                     startQRScanner();
                 }
+            });
+        }
+        
+        // --- Registro del Service Worker (NUEVO) ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('Service Worker registrado con éxito:', registration);
+                    })
+                    .catch(error => {
+                        console.error('Fallo en el registro del Service Worker:', error);
+                    });
             });
         }
         
