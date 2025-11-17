@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -13,7 +13,6 @@
     <meta name="apple-mobile-web-app-title" content="LAM Pro">
     <meta name="theme-color" content="#0f172a">
     <link rel="icon" href="favicon.ico">
-    
     <link rel="manifest" href="manifest.json"> 
     <link rel="apple-touch-icon" href="apple-touch-icon.png"> 
     
@@ -43,11 +42,27 @@
         .animate-spin {
             animation: spin 1s linear infinite;
         }
+        /* CLASES DE TEMA OSCURO PARA MÁXIMA LEGIBILIDAD */
+        .bg-card {
+            background-color: #1f2937; /* gray-800 */
+        }
+        .bg-input {
+            background-color: #111827; /* gray-900 */
+        }
+        .text-primary {
+            color: #22d3ee; /* cian-400 */
+        }
+        .text-secondary {
+            color: #d1d5db; /* gray-300 */
+        }
+        .border-base {
+            border-color: #374151; /* gray-700 */
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen">
 
-    <button id="menu-toggle" class="md:hidden fixed top-4 left-4 z-[100] p-2 rounded-full bg-cyan-500 hover:bg-cyan-600 shadow-lg transition duration-150">
+    <button id="menu-toggle" class="md:hidden fixed top-4 left-4 z-[100] p-2 rounded-full bg-cyan-600 hover:bg-cyan-700 shadow-lg transition duration-150">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
@@ -55,13 +70,13 @@
 
     <aside id="sidebar" class="fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition duration-300 ease-in-out bg-gray-900 border-r border-gray-700 w-64 z-50 flex flex-col shadow-2xl">
         <div class="p-6 text-center border-b border-gray-700">
-            <h1 class="text-3xl font-extrabold text-cyan-400 tracking-wider">LAM PRO</h1>
+            <h1 class="text-3xl font-extrabold text-primary tracking-wider">LAM PRO</h1>
             <p class="text-sm text-gray-400">Mejoramos lo que eres</p>
         </div>
         <nav class="flex-1 p-4 space-y-2">
             <a href="#" id="nav-image-upload-view" class="flex items-center p-3 rounded-xl text-lg font-medium text-white bg-gray-800 hover:bg-gray-700 transition duration-150 shadow-md">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L15 14m-2-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                Mi Motivación
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L15 14m-2-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                <span class="text-gray-100">Mi Motivación</span>
             </a>
             <a href="#" id="nav-routines-view" class="flex items-center p-3 rounded-xl text-lg font-medium text-gray-300 hover:bg-gray-800 transition duration-150">
                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>
@@ -88,33 +103,33 @@
                 Metas
             </a>
             <a href="#" id="nav-admin-view" class="flex items-center p-3 rounded-xl text-lg font-medium text-gray-300 hover:bg-red-800 transition duration-150 hidden">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.945 3.31.859 2.454 2.413a1.724 1.724 0 00-.585 3.122c.222.845 2.14 1.085 2.14 1.085s.018 2.378-2.324 2.853c-.34.07-.638.25-.838.513l-1.895 2.527c-.361.481-1.121.481-1.482 0l-1.895-2.527c-.2-.263-.498-.443-.838-.513C12.018 14.52 12 12.142 12 12.142s-1.918-.24-2.14-1.085a1.724 1.724 0 00-.585-3.122c-.856-1.554.91-3.358 2.454-2.413a1.724 1.724 0 002.573-1.066z" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.945 3.31.859 2.454 2.413a1.724 1.724 0 00-.585 3.122c.222.845 2.14 1.085 2.14 1.085s.018 2.378-2.324 2.853c-.34.07-.638.25-.838.513l-1.895 2.527c-.361.481-1.121.481-1.482 0l-1.895-2.527c-.2-.263-.498-.443-.838-.513C12.018 14.52 12 12.142 12 12.142s-1.918-.24-2.14-1.085a1.724 1.724 0 00-.585-3.122c-.856-1.554.91-3.358 2.454-2.413a1.724 1.724 0 002.573-1.066z" /></svg>
                 ADMIN
             </a>
         </nav>
         <div class="p-4 border-t border-gray-700">
-            <p id="user-info-footer" class="text-xs text-gray-500 break-all">ID Usuario: Cargando...</p>
+            <p id="user-info-footer" class="text-xs text-gray-400 break-all">ID Usuario: Cargando...</p>
         </div>
     </aside>
 
     <main id="main-content" class="md:ml-64 p-4 md:p-10 transition-all duration-300 ease-in-out">
         <header class="text-center mb-10">
-            <h2 class="text-4xl md:text-5xl font-bold text-cyan-400 mb-2">LAM PRO</h2>
+            <h2 class="text-4xl md:text-5xl font-bold text-primary mb-2">LAM PRO</h2>
             <p class="text-gray-400 text-xl">Mejoramos lo que eres</p>
         </header>
 
         <div id="message-box" class="hidden max-w-md w-full mx-auto mt-4 p-3 rounded-lg text-sm font-medium text-center" role="alert"></div>
 
         <section id="image-upload-view" class="max-w-4xl mx-auto bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border border-gray-700">
-            <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-3">Tu Foto de Motivación Personal</h3>
+            <h3 class="text-2xl font-bold text-gray-100 mb-6 border-b border-gray-700 pb-3">Tu Foto de Motivación Personal</h3>
             
             <div class="flex flex-col items-center justify-center space-y-8">
                 
-                <div id="image-container" class="relative group flex justify-center items-center p-4 bg-gray-900 rounded-xl shadow-inner border border-cyan-500/20 max-w-md w-full">
+                <div id="image-container" class="relative group flex justify-center items-center p-4 bg-gray-900 rounded-xl shadow-inner border border-cyan-400/50 max-w-md w-full">
                     
                     <img id="user-image" 
                          class="rounded-lg shadow-2xl w-full transition duration-300 group-hover:opacity-70"
-                         src="https://placehold.co/400x600/0f172a/06b6d4?text=SELECCIONAR%20FOTO" 
+                         src="https://placehold.co/400x600/111827/22d3ee?text=SELECCIONAR%20FOTO" 
                          alt="Foto de motivación personalizada"
                          crossorigin="anonymous">
 
@@ -129,11 +144,11 @@
         </section>
 
         <section id="routines-view" class="hidden max-w-4xl mx-auto bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border border-gray-700">
-            <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-3">Mi Progreso Diario de Rutina</h3>
+            <h3 class="text-2xl font-bold text-gray-100 mb-6 border-b border-gray-700 pb-3">Mi Progreso Diario de Rutina</h3>
             
             <div id="routine-content-area" class="space-y-6">
                 <div class="bg-gray-700 p-4 rounded-xl shadow-inner">
-                    <p class="text-lg font-semibold text-cyan-400" id="routine-title">Cargando Rutina...</p>
+                    <p class="text-lg font-semibold text-primary" id="routine-title">Cargando Rutina...</p>
                     <p id="routine-date" class="text-sm text-gray-400">Fecha:</p>
                 </div>
                 
@@ -141,35 +156,35 @@
                     <p class="text-gray-400" id="routine-loading-status">Cargando ejercicios...</p>
                     </div>
 
-                <button id="save-daily-routine-btn" class="w-full py-3 px-4 bg-green-600 text-white text-lg font-bold rounded-xl hover:bg-green-500 transition duration-150 shadow-md disabled:bg-gray-500" disabled>
+                <button id="save-daily-routine-btn" class="w-full py-3 px-4 bg-green-600 text-white text-lg font-bold rounded-xl hover:bg-green-700 transition duration-150 shadow-md disabled:opacity-50" disabled>
                     Registrar Progreso del Entrenamiento
                 </button>
             </div>
         </section>
         
         <section id="workout-view" class="hidden max-w-4xl mx-auto bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border border-gray-700">
-            <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-3">🔥 Registro de Gasto Calórico por QR</h3>
+            <h3 class="text-2xl font-bold text-gray-100 mb-6 border-b border-gray-700 pb-3">🔥 Registro de Gasto Calórico por QR</h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-4 p-4 bg-gray-700 rounded-xl shadow-inner">
-                    <h4 class="text-xl font-semibold text-cyan-400 mb-3">Registrar Sesión</h4>
+                    <h4 class="text-xl font-semibold text-primary mb-3">Registrar Sesión</h4>
                     
                     <div>
                         <label for="workout-type" class="block text-sm font-medium text-gray-300 mb-1">Modalidad / Clase</label>
-                        <select id="workout-type" class="w-full p-3 mt-1 bg-gray-900 border border-gray-600 rounded-lg text-white focus:ring-cyan-400 focus:border-cyan-400">
+                        <select id="workout-type" class="w-full p-3 mt-1 bg-input border border-gray-700 rounded-lg text-gray-100 focus:ring-primary focus:border-primary">
                             <option value="">Selecciona una clase</option>
                         </select>
                     </div>
 
                     <div>
                         <label for="calories-spent" class="block text-sm font-medium text-gray-300 mb-1">Calorías Gastadas (kcal)</label>
-                        <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
-                            <input type="number" id="calories-spent" placeholder="350" min="1" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-                            <span class="p-3 text-cyan-400 font-bold bg-gray-700">kcal</span>
+                        <div class="flex items-center bg-input rounded-lg overflow-hidden border border-gray-700">
+                            <input type="number" id="calories-spent" placeholder="350" min="1" class="w-full p-3 text-gray-100 bg-gray-900 focus:outline-none focus:ring-2 focus:ring-primary">
+                            <span class="p-3 text-primary font-bold bg-gray-700">kcal</span>
                         </div>
                     </div>
                     
-                    <button id="start-scan-btn" class="w-full py-3 mt-4 bg-red-600 text-white text-lg font-bold rounded-xl hover:bg-red-500 transition duration-150">
+                    <button id="start-scan-btn" class="w-full py-3 mt-4 bg-red-600 text-white text-lg font-bold rounded-xl hover:bg-red-700 transition duration-150">
                         Escanear Código QR del Cliente
                     </button>
 
@@ -181,9 +196,9 @@
                 </div>
 
                 <div class="space-y-4 p-4 bg-gray-700 rounded-xl shadow-inner">
-                    <h4 class="text-xl font-semibold text-cyan-400 mb-3 border-b border-gray-600 pb-2">Historial de Hoy</h4>
+                    <h4 class="text-xl font-semibold text-primary mb-3 border-b border-gray-700 pb-2">Historial de Hoy</h4>
                     <div id="daily-workout-summary" class="space-y-2">
-                        <p class="text-sm font-semibold text-white">Total Hoy: <span id="total-calories-today" class="text-red-400">0 kcal</span></p>
+                        <p class="text-sm font-semibold text-gray-100">Total Hoy: <span id="total-calories-today" class="text-red-400">0 kcal</span></p>
                     </div>
 
                     <div id="daily-workout-records" class="space-y-2 max-h-64 overflow-y-auto">
@@ -194,46 +209,46 @@
         </section>
 
         <section id="goals-view" class="hidden max-w-4xl mx-auto bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border border-gray-700">
-            <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-3">Metas de Nutrición y Seguimiento</h3>
+            <h3 class="text-2xl font-bold text-gray-100 mb-6 border-b border-gray-700 pb-3">Metas de Nutrición y Seguimiento</h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div class="space-y-4 p-4 bg-gray-700 rounded-xl shadow-inner">
-                    <h4 class="text-xl font-semibold text-white border-b border-gray-600 pb-2 mb-3">Establecer Mis Metas</h4>
+                    <h4 class="text-xl font-semibold text-gray-100 border-b border-gray-700 pb-2 mb-3">Establecer Mis Metas</h4>
                     
                     <div>
                         <label for="goal-calories-daily" class="block text-sm font-medium text-gray-300 mb-1">Meta Calórica Diaria</label>
-                        <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
-                            <input type="number" id="goal-calories-daily" placeholder="2000" min="1" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-                            <span class="p-3 text-cyan-400 font-bold bg-gray-700">kcal</span>
+                        <div class="flex items-center bg-input rounded-lg overflow-hidden border border-gray-700">
+                            <input type="number" id="goal-calories-daily" placeholder="2000" min="1" class="w-full p-3 text-gray-100 bg-gray-900 focus:outline-none focus:ring-2 focus:ring-primary">
+                            <span class="p-3 text-primary font-bold bg-gray-700">kcal</span>
                         </div>
                     </div>
                     
                     <div>
                         <label for="goal-calories-weekly" class="block text-sm font-medium text-gray-300 mb-1">Meta Calórica Semanal</label>
-                        <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
-                            <input type="number" id="goal-calories-weekly" placeholder="14000" min="1" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-                            <span class="p-3 text-cyan-400 font-bold bg-gray-700">kcal</span>
+                        <div class="flex items-center bg-input rounded-lg overflow-hidden border border-gray-700">
+                            <input type="number" id="goal-calories-weekly" placeholder="14000" min="1" class="w-full p-3 text-gray-100 bg-gray-900 focus:outline-none focus:ring-2 focus:ring-primary">
+                            <span class="p-3 text-primary font-bold bg-gray-700">kcal</span>
                         </div>
                     </div>
                     
-                    <button id="save-goals-btn" class="w-full py-2 mt-2 bg-cyan-600 text-white font-bold rounded-xl hover:bg-cyan-500 transition duration-150">
+                    <button id="save-goals-btn" class="w-full py-2 mt-2 bg-primary text-white font-bold rounded-xl hover:bg-cyan-700 transition duration-150 shadow-md">
                         Guardar Metas
                     </button>
                 </div>
                 
                 <div class="space-y-4 p-4 bg-gray-700 rounded-xl shadow-inner">
-                    <h4 class="text-xl font-semibold text-white border-b border-gray-600 pb-2 mb-3">Tu Seguimiento Actual</h4>
+                    <h4 class="text-xl font-semibold text-gray-100 border-b border-gray-700 pb-2 mb-3">Tu Seguimiento Actual</h4>
                     
-                    <div id="daily-tracking-box" class="p-4 rounded-xl border-2 border-cyan-500 bg-gray-800 transition duration-300">
-                        <p class="text-lg font-semibold text-white mb-2">Consumo Diario (Hoy)</p>
-                        <p class="text-3xl font-extrabold text-cyan-400" id="daily-consumed">0 kcal</p>
+                    <div id="daily-tracking-box" class="p-4 rounded-xl border-2 border-primary bg-gray-800 transition duration-300">
+                        <p class="text-lg font-semibold text-gray-100 mb-2">Consumo Diario (Hoy)</p>
+                        <p class="text-3xl font-extrabold text-primary" id="daily-consumed">0 kcal</p>
                         <p class="text-sm text-gray-400" id="daily-goal-text">Meta: 0 kcal</p>
                         <p class="text-sm font-bold mt-2" id="daily-alert"></p>
                     </div>
                     
-                    <div class="p-4 rounded-xl border-2 border-gray-500 bg-gray-800">
-                        <p class="text-lg font-semibold text-white mb-2">Consumo Semanal</p>
-                        <p class="text-3xl font-extrabold text-white" id="weekly-consumed">0 kcal</p>
+                    <div class="p-4 rounded-xl border-2 border-gray-600 bg-gray-800">
+                        <p class="text-lg font-semibold text-gray-100 mb-2">Consumo Semanal</p>
+                        <p class="text-3xl font-extrabold text-gray-100" id="weekly-consumed">0 kcal</p>
                         <p class="text-sm text-gray-400" id="weekly-goal-text">Meta: 0 kcal</p>
                     </div>
                 </div>
@@ -241,73 +256,73 @@
         </section>
 
         <section id="measurements-view" class="hidden max-w-4xl mx-auto bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border border-gray-700">
-            <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-3">Registro de Medidas Corporales</h3>
+            <h3 class="text-2xl font-bold text-gray-100 mb-6 border-b border-gray-700 pb-3">Registro de Medidas Corporales</h3>
             <p class="text-gray-400 mb-6">Ingresa tus medidas con hasta dos decimales (ej: 99.99).</p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
                 <div class="space-y-4 md:col-span-1">
                     <div class="col-span-2">
                         <label for="input-weight" class="block text-sm font-medium text-gray-300 mb-1">Peso</label>
-                        <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
-                            <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-weight" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-                            <span class="p-3 text-cyan-400 font-bold bg-gray-700">kg</span>
+                        <div class="flex items-center bg-input rounded-lg overflow-hidden border border-gray-700">
+                            <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-weight" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 focus:outline-none focus:ring-2 focus:ring-primary">
+                            <span class="p-3 text-primary font-bold bg-gray-700">kg</span>
                         </div>
                     </div>
 
                     <label for="input-neck" class="block text-sm font-medium text-gray-300 mb-1">Cuello</label>
-                    <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
-                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-neck" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-                            <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                    <div class="flex items-center bg-input rounded-lg overflow-hidden border border-gray-700">
+                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-neck" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 focus:outline-none focus:ring-2 focus:ring-primary">
+                            <span class="p-3 text-primary font-bold bg-gray-700">cm</span>
                     </div>
 
                     <label for="input-shoulder" class="block text-sm font-medium text-gray-300 mb-1">Hombro</label>
-                    <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
-                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-shoulder" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-                        <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                    <div class="flex items-center bg-input rounded-lg overflow-hidden border border-gray-700">
+                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-shoulder" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 focus:outline-none focus:ring-2 focus:ring-primary">
+                        <span class="p-3 text-primary font-bold bg-gray-700">cm</span>
                     </div>
 
                     <label for="input-chest" class="block text-sm font-medium text-gray-300 mb-1">Busto / Pecho</label>
-                    <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
-                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-chest" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-                        <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                    <div class="flex items-center bg-input rounded-lg overflow-hidden border border-gray-700">
+                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-chest" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 focus:outline-none focus:ring-2 focus:ring-primary">
+                        <span class="p-3 text-primary font-bold bg-gray-700">cm</span>
                     </div>
                     
                     <label for="input-arm" class="block text-sm font-medium text-gray-300 mb-1">Brazo</label>
-                    <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
-                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-arm" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-                        <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                    <div class="flex items-center bg-input rounded-lg overflow-hidden border border-gray-700">
+                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-arm" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 focus:outline-none focus:ring-2 focus:ring-primary">
+                        <span class="p-3 text-primary font-bold bg-gray-700">cm</span>
                     </div>
                 </div>
 
                 <div class="space-y-4 md:col-span-1 pt-4 md:pt-0">
                     <label for="input-forearm" class="block text-sm font-medium text-gray-300 mb-1">Antebrazo</label>
-                    <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
-                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-forearm" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-                        <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                    <div class="flex items-center bg-input rounded-lg overflow-hidden border border-gray-700">
+                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-forearm" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 focus:outline-none focus:ring-2 focus:ring-primary">
+                        <span class="p-3 text-primary font-bold bg-gray-700">cm</span>
                     </div>
 
                     <label for="input-waist" class="block text-sm font-medium text-gray-300 mb-1">Cintura</label>
-                    <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
-                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-waist" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-                        <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                    <div class="flex items-center bg-input rounded-lg overflow-hidden border border-gray-700">
+                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-waist" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 focus:outline-none focus:ring-2 focus:ring-primary">
+                        <span class="p-3 text-primary font-bold bg-gray-700">cm</span>
                     </div>
 
                     <label for="input-abdomen" class="block text-sm font-medium text-gray-300 mb-1">Abdomen</label>
-                    <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
-                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-abdomen" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-                        <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                    <div class="flex items-center bg-input rounded-lg overflow-hidden border border-gray-700">
+                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-abdomen" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 focus:outline-none focus:ring-2 focus:ring-primary">
+                        <span class="p-3 text-primary font-bold bg-gray-700">cm</span>
                     </div>
 
                     <label for="input-hips" class="block text-sm font-medium text-gray-300 mb-1">Cadera</label>
-                    <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
-                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-hips" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-                        <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                    <div class="flex items-center bg-input rounded-lg overflow-hidden border border-gray-700">
+                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-hips" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 focus:outline-none focus:ring-2 focus:ring-primary">
+                        <span class="p-3 text-primary font-bold bg-gray-700">cm</span>
                     </div>
                     
                     <label for="input-thigh" class="block text-sm font-medium text-gray-300 mb-1">Muslo</label>
-                    <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
-                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-thigh" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-                        <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                    <div class="flex items-center bg-input rounded-lg overflow-hidden border border-gray-700">
+                        <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-thigh" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 focus:outline-none focus:ring-2 focus:ring-primary">
+                        <span class="p-3 text-primary font-bold bg-gray-700">cm</span>
                     </div>
                 </div>
 
@@ -315,9 +330,9 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
                         <div>
                             <label for="input-calf" class="block text-sm font-medium text-gray-300 mb-1">Pantorrilla</label>
-                            <div class="flex items-center bg-gray-900 rounded-lg overflow-hidden">
-                                <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-calf" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 border-2 border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-                                <span class="p-3 text-cyan-400 font-bold bg-gray-700">cm</span>
+                            <div class="flex items-center bg-input rounded-lg overflow-hidden border border-gray-700">
+                                <input type="number" step="0.01" min="1" max="999.99" maxlength="6" id="input-calf" placeholder="00.00" class="w-full p-3 text-gray-100 bg-gray-900 focus:outline-none focus:ring-2 focus:ring-primary">
+                                <span class="p-3 text-primary font-bold bg-gray-700">cm</span>
                             </div>
                         </div>
                         <div>
@@ -326,26 +341,26 @@
                 </div>
             </div>
 
-            <button id="save-measurements-btn" class="w-full mt-6 py-3 px-4 bg-cyan-600 text-white text-lg font-bold rounded-xl hover:bg-cyan-500 transition duration-150 shadow-md">
+            <button id="save-measurements-btn" class="w-full mt-6 py-3 px-4 bg-cyan-600 text-white text-lg font-bold rounded-xl hover:bg-cyan-700 transition duration-150 shadow-md">
                 Guardar Medidas
             </button>
         </section>
 
         <section id="results-view" class="hidden max-w-4xl mx-auto bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border border-gray-700">
-            <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-3">📈 Resultados y Progreso</h3>
+            <h3 class="text-2xl font-bold text-gray-100 mb-6 border-b border-gray-700 pb-3">📈 Resultados y Progreso</h3>
             
             <div class="space-y-10">
                 <div class="bg-gray-700 p-4 rounded-xl shadow-inner">
-                    <h4 class="text-xl font-semibold text-cyan-400 mb-4">Historial de Peso (kg)</h4>
+                    <h4 class="text-xl font-semibold text-primary mb-4">Historial de Peso (kg)</h4>
                     <div class="h-64">
                         <canvas id="weight-chart"></canvas>
                     </div>
                 </div>
 
                 <div class="bg-gray-700 p-4 rounded-xl shadow-inner">
-                    <h4 class="text-xl font-semibold text-cyan-400 mb-4">Cambios de Medidas (Inicio vs. Último)</h4>
+                    <h4 class="text-xl font-semibold text-primary mb-4">Cambios de Medidas (Inicio vs. Último)</h4>
                     <div class="overflow-x-auto">
-                        <table id="measurements-comparison" class="min-w-full divide-y divide-gray-600">
+                        <table id="measurements-comparison" class="min-w-full divide-y divide-gray-700">
                             <thead>
                                 <tr>
                                     <th class="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Medida</th>
@@ -362,9 +377,9 @@
                 </div>
                 
                 <div class="bg-gray-700 p-4 rounded-xl shadow-inner">
-                    <h4 class="text-xl font-semibold text-cyan-400 mb-4">📊 Estado de Metas Calóricas (Últimos 7 días)</h4>
+                    <h4 class="text-xl font-semibold text-primary mb-4">📊 Estado de Metas Calóricas (Últimos 7 días)</h4>
                     <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-600">
+                        <table class="min-w-full divide-y divide-gray-700">
                             <thead>
                                 <tr>
                                     <th class="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Día</th>
@@ -383,12 +398,12 @@
         </section>
 
         <section id="nutrition-view" class="hidden max-w-4xl mx-auto bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border border-gray-700">
-            <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-3">Análisis Nutricional (IA)</h3>
+            <h3 class="text-2xl font-bold text-gray-100 mb-6 border-b border-gray-700 pb-3">Análisis Nutricional (IA)</h3>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-4">
                     <div class="p-4 bg-gray-700 rounded-xl shadow-inner">
-                        <h4 class="text-xl font-semibold text-white mb-3 border-b border-gray-600 pb-2">Foto de la Comida</h4>
+                        <h4 class="text-xl font-semibold text-gray-100 mb-3 border-b border-gray-700 pb-2">Foto de la Comida</h4>
 
                         <input type="file" id="meal-file-upload" accept="image/*" class="hidden">
 
@@ -397,38 +412,38 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l1.458-2.618A2 2 0 0111.332 3h1.334a2 2 0 011.664.89l1.458 2.618A2 2 0 0017.07 7H18a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                                 Tomar Foto
                             </button>
-                            <button id="browse-photo-btn" class="py-2 px-4 bg-cyan-600 text-white font-bold rounded-xl hover:bg-cyan-500 transition duration-150">
+                            <button id="browse-photo-btn" class="py-2 px-4 bg-cyan-600 text-white font-bold rounded-xl hover:bg-cyan-700 transition duration-150">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                                 Buscar Archivos
                             </button>
                         </div>
                         
                         <div class="relative max-w-full h-48 bg-gray-900 rounded-xl flex items-center justify-center overflow-hidden border border-gray-700">
-                            <img id="meal-preview" class="object-cover w-full h-full" src="https://placehold.co/300x200/0f172a/06b6d4?text=CARGAR%20COMIDA" alt="Previsualización de comida">
+                            <img id="meal-preview" class="object-cover w-full h-full" src="https://placehold.co/300x200/111827/22d3ee?text=CARGAR%20COMIDA" alt="Previsualización de comida">
                             <div id="loading-overlay" class="absolute inset-0 bg-black/70 flex flex-col items-center justify-center hidden">
-                                <svg class="animate-spin h-8 w-8 text-cyan-400 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l-1.42 1.42A9.957 9.957 0 0012 22v-4c-2.115 0-4.085-.85-5.54-2.291z"></path></svg>
+                                <svg class="animate-spin h-8 w-8 text-primary mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l-1.42 1.42A9.957 9.957 0 0012 22v-4c-2.115 0-4.085-.85-5.54-2.291z"></path></svg>
                                 <p class="text-white">Analizando con IA...</p>
                             </div>
                         </div>
                     </div>
                     
                     <div id="meal-results-box" class="p-4 bg-gray-700 rounded-xl shadow-inner space-y-3 hidden">
-                        <h4 class="text-xl font-semibold text-white border-b border-gray-600 pb-2">Resultados Estimados (IA)</h4>
+                        <h4 class="text-xl font-semibold text-gray-100 border-b border-gray-700 pb-2">Resultados Estimados (IA)</h4>
                         
-                        <p class="text-lg font-semibold text-cyan-400" id="meal-name">Comida: Desconocida</p>
+                        <p class="text-lg font-semibold text-primary" id="meal-name">Comida: Desconocida</p>
                         
                         <div class="flex flex-col space-y-2">
-                            <p class="text-white">
+                            <p class="text-gray-100">
                                 <span class="font-bold text-2xl" id="estimated-calories">0</span> 
                                 <span class="text-sm text-gray-400">kcal</span>
                             </p>
-                            <p class="text-white">
+                            <p class="text-gray-100">
                                 <span class="font-bold text-2xl" id="estimated-protein">0</span> 
                                 <span class="text-sm text-gray-400">gramos de proteína</span>
                             </p>
                         </div>
 
-                        <button id="save-meal-btn" class="w-full py-2 bg-green-600 text-white font-bold rounded-xl hover:bg-green-500 transition duration-150 mt-3">
+                        <button id="save-meal-btn" class="w-full py-2 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition duration-150 mt-3">
                             Registrar Comida
                         </button>
                     </div>
@@ -436,68 +451,68 @@
 
                 <div class="space-y-4">
                     <div class="p-4 bg-gray-700 rounded-xl shadow-inner">
-                        <h4 class="text-xl font-semibold text-white border-b border-gray-600 pb-2 mb-3">Registro Diario de Comidas</h4>
+                        <h4 class="text-xl font-semibold text-gray-100 border-b border-gray-700 pb-2 mb-3">Registro Diario de Comidas</h4>
                         <div id="daily-records-list" class="space-y-2 h-64 overflow-y-auto">
                             <p class="text-gray-400">No hay registros para hoy.</p>
                         </div>
                     </div>
                     
                     <div class="p-4 bg-gray-700 rounded-xl shadow-inner">
-                        <h4 class="text-xl font-semibold text-white border-b border-gray-600 pb-2 mb-3">Resumen Semanal</h4>
+                        <h4 class="text-xl font-semibold text-gray-100 border-b border-gray-700 pb-2 mb-3">Resumen Semanal</h4>
                         <div id="weekly-summary-area" class="space-y-2">
-                            <p class="text-gray-300">Total Calorías (7 días): <span class="font-bold text-cyan-400" id="weekly-calories-total">0</span> kcal</p>
-                            <p class="text-gray-300">Total Proteínas (7 días): <span class="font-bold text-cyan-400" id="weekly-protein-total">0</span> g</p>
+                            <p class="text-gray-100">Total Calorías (7 días): <span class="font-bold text-primary" id="weekly-calories-total">0</span> kcal</p>
+                            <p class="text-gray-100">Total Proteínas (7 días): <span class="font-bold text-primary" id="weekly-protein-total">0</span> g</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="admin-view" class="hidden max-w-5xl mx-auto bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border border-red-700">
-            <h3 class="text-2xl font-bold text-white mb-6 border-b border-red-700 pb-3">⚙️ Panel de Administración</h3>
-            <p class="text-red-400 mb-6">Solo los usuarios con rol 'admin' pueden acceder a esta sección.</p>
+        <section id="admin-view" class="hidden max-w-5xl mx-auto bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border border-gray-700">
+            <h3 class="text-2xl font-bold text-gray-100 mb-6 border-b border-red-600 pb-3">⚙️ Panel de Administración</h3>
+            <p class="text-red-600 mb-6">Solo los usuarios con rol 'admin' pueden acceder a esta sección.</p>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
                 <div class="bg-gray-700 p-4 rounded-xl shadow-inner col-span-1">
-                    <h4 class="text-xl font-semibold text-cyan-400 mb-4 border-b border-gray-600 pb-2">1. Registrar Nuevo Cliente</h4>
+                    <h4 class="text-xl font-semibold text-primary mb-4 border-b border-gray-700 pb-2">1. Registrar Nuevo Cliente</h4>
                     <p class="text-sm text-gray-400 mb-3">Asigna un nombre y ID al nuevo cliente.</p>
                     
                     <div class="space-y-3">
                         <div>
                             <label for="new-user-id" class="block text-sm font-medium text-gray-300">ID del Cliente (UID)</label>
-                            <input type="text" id="new-user-id" placeholder="UID generado por Firebase" class="w-full p-2 mt-1 bg-gray-900 border border-gray-600 rounded-lg text-white">
+                            <input type="text" id="new-user-id" placeholder="UID generado por Firebase" class="w-full p-2 mt-1 bg-input border border-gray-700 rounded-lg text-gray-100">
                         </div>
                         <div>
                             <label for="new-user-name" class="block text-sm font-medium text-gray-300">Nombre del Cliente</label>
-                            <input type="text" id="new-user-name" placeholder="Nombre completo" class="w-full p-2 mt-1 bg-gray-900 border border-gray-600 rounded-lg text-white">
+                            <input type="text" id="new-user-name" placeholder="Nombre completo" class="w-full p-2 mt-1 bg-input border border-gray-700 rounded-lg text-gray-100">
                         </div>
-                        <button id="register-new-user-btn" class="w-full py-2 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-500 transition duration-150">
+                        <button id="register-new-user-btn" class="w-full py-2 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition duration-150">
                             Registrar Cliente y Generar QR
                         </button>
                     </div>
 
-                    <div id="qr-code-area" class="mt-6 pt-4 border-t border-gray-600 text-center hidden">
-                        <h5 class="text-lg font-medium text-white mb-2">Código QR del Cliente</h5>
-                        <div id="qr-canvas-container" class="bg-white p-2 inline-block rounded-lg shadow-lg">
+                    <div id="qr-code-area" class="mt-6 pt-4 border-t border-gray-700 text-center hidden">
+                        <h5 class="text-lg font-medium text-gray-100 mb-2">Código QR del Cliente</h5>
+                        <div id="qr-canvas-container" class="bg-white p-2 inline-block rounded-lg shadow-lg border border-gray-700">
                             </div>
-                        <p id="qr-client-name" class="text-sm text-cyan-400 mt-2 break-all"></p>
+                        <p id="qr-client-name" class="text-sm text-primary mt-2 break-all"></p>
                     </div>
                 </div>
 
                 <div class="bg-gray-700 p-4 rounded-xl shadow-inner col-span-1 lg:col-span-2">
-                    <h4 class="text-xl font-semibold text-cyan-400 mb-4 border-b border-gray-600 pb-2">2. Rutina de Entrenamiento Global</h4>
+                    <h4 class="text-xl font-semibold text-primary mb-4 border-b border-gray-700 pb-2">2. Rutina de Entrenamiento Global</h4>
                     
                     <div class="space-y-3">
                         <div>
                             <label for="routine-admin-title" class="block text-sm font-medium text-gray-300">Título de la Rutina</label>
-                            <input type="text" id="routine-admin-title" placeholder="Ej: Fase 1 - Fuerza y Resistencia" class="w-full p-2 mt-1 bg-gray-900 border border-gray-600 rounded-lg text-white">
+                            <input type="text" id="routine-admin-title" placeholder="Ej: Fase 1 - Fuerza y Resistencia" class="w-full p-2 mt-1 bg-input border border-gray-700 rounded-lg text-gray-100">
                         </div>
-                        <h5 class="text-lg font-medium text-gray-300 pt-2 border-t border-gray-600">Ejercicios (Formato: Nombre, Series, Repeticiones)</h5>
+                        <h5 class="text-lg font-medium text-gray-300 pt-2 border-t border-gray-700">Ejercicios (Formato: Nombre, Series, Repeticiones)</h5>
                         
-                        <textarea id="routine-admin-content" rows="6" placeholder="Ejemplo:&#10;- Sentadilla, 4, 12&#10;- Press de Banca, 3, 10&#10;- Peso Muerto, 3, 8" class="w-full p-2 mt-1 bg-gray-900 border border-gray-600 rounded-lg text-white"></textarea>
+                        <textarea id="routine-admin-content" rows="6" placeholder="Ejemplo:&#10;- Sentadilla, 4, 12&#10;- Press de Banca, 3, 10&#10;- Peso Muerto, 3, 8" class="w-full p-2 mt-1 bg-input border border-gray-700 rounded-lg text-gray-100"></textarea>
                         
-                        <button id="save-global-routine-btn" class="w-full py-2 bg-cyan-600 text-white font-bold rounded-xl hover:bg-cyan-500 transition duration-150">
+                        <button id="save-global-routine-btn" class="w-full py-2 bg-primary text-white font-bold rounded-xl hover:bg-cyan-700 transition duration-150">
                             Guardar Rutina Global
                         </button>
                     </div>
@@ -505,9 +520,9 @@
             </div>
             
             <div class="bg-gray-700 p-4 rounded-xl shadow-inner mt-6">
-                <h4 class="text-xl font-semibold text-cyan-400 mb-4 border-b border-gray-600 pb-2">3. Clientes Registrados</h4>
+                <h4 class="text-xl font-semibold text-primary mb-4 border-b border-gray-700 pb-2">3. Clientes Registrados</h4>
                 <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-600">
+                    <table class="min-w-full divide-y divide-gray-700">
                         <thead>
                             <tr>
                                 <th class="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Nombre</th>
@@ -535,8 +550,8 @@
 
         // Global variables provided by the environment
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        const firebaseConfig = { /* Debes añadir tu configuración real aquí */ };
+        const initialAuthToken = null;
         
         // =========================================================================
         // !!! CLAVE DE API INSERTADA !!!
@@ -896,16 +911,16 @@
                 querySnapshot.forEach(doc => {
                     const data = doc.data();
                     const row = document.createElement('tr');
-                    row.className = 'hover:bg-gray-600/50';
+                    row.className = 'hover:bg-gray-800/50';
                     row.innerHTML = `
-                        <td class="px-3 py-2 font-medium text-white">${data.name || 'Sin Nombre'}</td>
+                        <td class="px-3 py-2 font-medium text-gray-100">${data.name || 'Sin Nombre'}</td>
                         <td class="px-3 py-2 text-gray-400 text-sm break-all">${doc.id}</td>
                     `;
                     registeredUsersListBody.appendChild(row);
                 });
             } catch (error) {
                 console.error("Error loading user list:", error);
-                registeredUsersListBody.innerHTML = '<tr><td class="px-3 py-2 text-red-400 italic" colspan="2">Error al cargar la lista.</td></tr>';
+                registeredUsersListBody.innerHTML = '<tr><td class="px-3 py-2 text-red-600 italic" colspan="2">Error al cargar la lista.</td></tr>';
             }
         }
 
@@ -975,7 +990,7 @@
             const exercises = data.exercises || [];
             
             if (exercises.length === 0) {
-                exercisesListContainer.innerHTML = '<p class="text-yellow-400">No hay ejercicios configurados en la rutina actual.</p>';
+                exercisesListContainer.innerHTML = '<p class="text-yellow-600">No hay ejercicios configurados en la rutina actual.</p>';
                 saveRoutineBtn.disabled = true;
                 return;
             }
@@ -985,25 +1000,25 @@
             
             exercises.forEach((exercise, index) => {
                 const exerciseDiv = document.createElement('div');
-                exerciseDiv.className = 'bg-gray-700 p-4 rounded-xl shadow-md border border-gray-600';
+                exerciseDiv.className = 'bg-gray-700 p-4 rounded-xl shadow-md border border-gray-700';
                 exerciseDiv.innerHTML = `
-                    <h5 class="text-xl font-bold text-white mb-3">${index + 1}. ${exercise.name || 'Ejercicio sin nombre'}</h5>
+                    <h5 class="text-xl font-bold text-gray-100 mb-3">${index + 1}. ${exercise.name || 'Ejercicio sin nombre'}</h5>
                     
                     <div class="grid grid-cols-3 gap-4 text-center">
                         <div>
-                            <label for="weight-${index}" class="block text-sm font-medium text-gray-400">Peso Utilizado (kg)</label>
+                            <label for="weight-${index}" class="block text-sm font-medium text-gray-300">Peso Utilizado (kg)</label>
                             <input type="number" step="0.5" min="0" id="weight-${index}" data-exercise-name="${exercise.name}" 
-                                class="w-full p-2 mt-1 text-gray-100 bg-gray-900 rounded-lg focus:ring-cyan-400 focus:border-cyan-400 border border-gray-600 text-center" placeholder="0">
+                                class="w-full p-2 mt-1 bg-input border border-gray-700 rounded-lg text-gray-100 text-center focus:ring-primary focus:border-primary" placeholder="0">
                         </div>
                         <div>
-                            <label for="sets-${index}" class="block text-sm font-medium text-gray-400">Series</label>
+                            <label for="sets-${index}" class="block text-sm font-medium text-gray-300">Series</label>
                             <input type="number" min="1" id="sets-${index}" 
-                                class="w-full p-2 mt-1 text-gray-100 bg-gray-900 rounded-lg focus:ring-cyan-400 focus:border-cyan-400 border border-gray-600 text-center" placeholder="3">
+                                class="w-full p-2 mt-1 bg-input border border-gray-700 rounded-lg text-gray-100 text-center focus:ring-primary focus:border-primary" placeholder="3">
                         </div>
                         <div>
-                            <label for="reps-${index}" class="block text-sm font-medium text-gray-400">Repeticiones</label>
+                            <label for="reps-${index}" class="block text-sm font-medium text-gray-300">Repeticiones</label>
                             <input type="number" min="1" id="reps-${index}" 
-                                class="w-full p-2 mt-1 text-gray-100 bg-gray-900 rounded-lg focus:ring-cyan-400 focus:border-cyan-400 border border-gray-600 text-center" placeholder="10">
+                                class="w-full p-2 mt-1 bg-input border border-gray-700 rounded-lg text-gray-100 text-center focus:ring-primary focus:border-primary" placeholder="10">
                         </div>
                     </div>
                 `;
@@ -1026,13 +1041,13 @@
                     renderRoutine(data); 
                 } else {
                     routineTitleElement.textContent = 'Rutina No Disponible';
-                    exercisesListContainer.innerHTML = '<p class="text-red-400">El administrador aún no ha configurado la rutina global.</p>';
+                    exercisesListContainer.innerHTML = '<p class="text-red-600">El administrador aún no ha configurado la rutina global.</p>';
                     saveRoutineBtn.disabled = true;
                 }
             }, (error) => {
                 console.error("Error loading public routine data:", error);
                 routineTitleElement.textContent = 'Error de Carga';
-                exercisesListContainer.innerHTML = '<p class="text-red-400">Ocurrió un error al intentar cargar la rutina.</p>';
+                exercisesListContainer.innerHTML = '<p class="text-red-600">Ocurrió un error al intentar cargar la rutina.</p>';
             });
         }
 
@@ -1042,7 +1057,7 @@
             }
             
             saveRoutineBtn.disabled = true;
-            showMessage('Registrando entrenamiento diario...', 'bg-cyan-800');
+            showMessage('Registrando entrenamiento diario...', 'bg-cyan-600');
 
             const exerciseRecords = [];
             
@@ -1153,7 +1168,7 @@
             if (!isValid) return showMessage('Por favor, ingresa solo números válidos.', 'bg-yellow-600');
             if (!hasNewValue) return showMessage('Ingresa al menos un valor de medida antes de guardar.', 'bg-yellow-600');
             
-            showMessage('Guardando medidas corporales...', 'bg-cyan-800');
+            showMessage('Guardando medidas corporales...', 'bg-cyan-600');
 
             try {
                 const timestamp = new Date().getTime();
@@ -1223,14 +1238,14 @@
                             title: {
                                 display: true,
                                 text: 'Peso (kg)',
-                                color: '#9ca3af'
+                                color: '#d1d5db'
                             },
-                            grid: { color: '#4b5563' },
-                            ticks: { color: '#9ca3af' }
+                            grid: { color: '#374151' },
+                            ticks: { color: '#d1d5db' }
                         },
                         x: {
                             grid: { display: false },
-                            ticks: { color: '#9ca3af' }
+                            ticks: { color: '#d1d5db' }
                         }
                     },
                     plugins: {
@@ -1268,14 +1283,14 @@
                     const unit = (field === 'weight') ? 'kg' : 'cm';
                     const diffText = diff === 0 ? '--' : `${diff.toFixed(2)} ${unit}`;
                     
-                    let colorClass = 'text-gray-300';
+                    let colorClass = 'text-gray-100';
                     const isLossMetric = ['weight', 'waist', 'abdomen', 'hips'].includes(field);
                     
                     if (diff !== 0) {
                         if (isLossMetric) {
-                            colorClass = diff < 0 ? 'text-green-400' : 'text-red-400';
+                            colorClass = diff < 0 ? 'text-green-400 font-bold' : 'text-red-400 font-bold';
                         } else {
-                            colorClass = diff > 0 ? 'text-green-400' : 'text-red-400';
+                            colorClass = diff > 0 ? 'text-green-400 font-bold' : 'text-red-400 font-bold';
                         }
                     }
 
@@ -1284,10 +1299,10 @@
 
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td class="px-3 py-2 font-medium text-white">${fieldName}</td>
+                        <td class="px-3 py-2 font-medium text-gray-100">${fieldName}</td>
                         <td class="px-3 py-2 text-gray-400">${startValue.toFixed(2)} ${unit}</td>
-                        <td class="px-3 py-2 text-white">${endValue.toFixed(2)} ${unit}</td>
-                        <td class="px-3 py-2 font-bold ${colorClass}">${diffText}</td>
+                        <td class="px-3 py-2 text-gray-100">${endValue.toFixed(2)} ${unit}</td>
+                        <td class="px-3 py-2 ${colorClass}">${diffText}</td>
                     `;
                     comparisonBody.appendChild(row);
                 }
@@ -1346,8 +1361,8 @@
                 
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td class="px-3 py-2 text-white">${item.day} (${item.date})</td>
-                    <td class="px-3 py-2 text-cyan-400">${item.consumption.toFixed(0)} kcal</td>
+                    <td class="px-3 py-2 text-gray-100">${item.day} (${item.date})</td>
+                    <td class="px-3 py-2 text-primary">${item.consumption.toFixed(0)} kcal</td>
                     <td class="px-3 py-2 text-gray-400">${goal > 0 ? goal.toLocaleString() : '--'} kcal</td>
                     <td class="px-3 py-2 ${statusClass}">${statusText}</td>
                 `;
@@ -1359,7 +1374,7 @@
         async function loadResults() {
             if (!db || !userId) return showMessage('Error: Sesión no activa.', 'bg-red-600');
 
-            showMessage('Cargando historial de progreso...', 'bg-gray-600');
+            showMessage('Cargando historial de progreso...', 'bg-gray-700');
 
             try {
                 // 1. Obtener Historial de Medidas COMPLETAS
@@ -1437,29 +1452,29 @@
             
             weeklyConsumedText.textContent = `${weeklyCalories.toFixed(0)} kcal`;
 
-            dailyTrackingBox.classList.remove('border-red-500', 'border-cyan-500', 'border-yellow-500', 'border-green-500');
+            dailyTrackingBox.classList.remove('border-red-600', 'border-primary', 'border-yellow-600', 'border-green-600');
             dailyAlert.className = 'text-sm font-bold mt-2';
             dailyAlert.textContent = '';
             
             if (goal > 0) {
                 if (consumed > goal) {
                     const excess = consumed - goal;
-                    dailyTrackingBox.classList.add('border-red-500');
-                    dailyAlert.classList.add('text-red-500');
+                    dailyTrackingBox.classList.add('border-red-600');
+                    dailyAlert.classList.add('text-red-400');
                     dailyAlert.textContent = `¡ALERTA! Exceso de ${excess.toFixed(0)} kcal.`;
                 } else if (consumed >= goal) {
-                    dailyTrackingBox.classList.add('border-green-500');
-                    dailyAlert.classList.add('text-green-500');
+                    dailyTrackingBox.classList.add('border-green-600');
+                    dailyAlert.classList.add('text-green-400');
                     dailyAlert.textContent = `¡Meta Diaria Alcanzada!`;
                 } else {
-                    dailyTrackingBox.classList.add('border-cyan-500');
+                    dailyTrackingBox.classList.add('border-primary');
+                    dailyAlert.classList.add('text-primary');
                     const remaining = goal - consumed;
-                    dailyAlert.classList.add('text-cyan-400');
                     dailyAlert.textContent = `Faltan ${remaining.toFixed(0)} kcal.`;
                 }
             } else {
-                dailyTrackingBox.classList.add('border-yellow-500');
-                dailyAlert.classList.add('text-yellow-500');
+                dailyTrackingBox.classList.add('border-yellow-600');
+                dailyAlert.classList.add('text-yellow-400');
                 dailyAlert.textContent = 'Establece tu meta diaria en la sección "Metas".';
             }
         }
@@ -1504,10 +1519,10 @@
                         const time = date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
                         
                         dailyRecordsList.innerHTML += `
-                            <div class="p-3 bg-gray-800 rounded-lg border-l-4 border-cyan-400">
-                                <p class="text-sm font-bold text-white">${data.mealName || 'Comida Registrada'}</p>
+                            <div class="p-3 bg-gray-700 rounded-lg border-l-4 border-primary">
+                                <p class="text-sm font-bold text-gray-100">${data.mealName || 'Comida Registrada'}</p>
                                 <p class="text-xs text-gray-400">${time}</p>
-                                <p class="text-sm text-cyan-400">${(data.calories || 0).toFixed(0)} kcal | ${(data.protein || 0).toFixed(1)} g proteína</p>
+                                <p class="text-sm text-primary">${(data.calories || 0).toFixed(0)} kcal | ${(data.protein || 0).toFixed(1)} g proteína</p>
                             </div>
                         `;
                     });
@@ -1623,7 +1638,7 @@
                 
                 currentMealData = null;
                 mealResultsBox.classList.add('hidden');
-                mealPreview.src = "https://placehold.co/300x200/0f172a/06b6d4?text=CARGAR%20COMIDA";
+                mealPreview.src = "https://placehold.co/300x200/111827/22d3ee?text=CARGAR%20COMIDA";
                 
             } catch (error) {
                 console.error("Error saving meal record:", error);
@@ -1674,7 +1689,7 @@
             scanStatusText.classList.remove('hidden');
             scannedClientUIDText.classList.add('hidden');
             lastScannedUID = null;
-            startScanBtn.textContent = 'Detener Escáner';
+            startScanBtn.textContent = 'Escanear Código QR del Cliente';
             
             html5QrCode = new Html5Qrcode("reader-container");
             
@@ -1791,9 +1806,9 @@
                     const time = new Date(record.timestamp).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
                     
                     dailyWorkoutRecordsContainer.innerHTML += `
-                        <div class="p-2 bg-gray-800 rounded-lg border-l-4 border-red-400 flex justify-between items-center">
+                        <div class="p-2 bg-gray-700 rounded-lg border-l-4 border-red-600 flex justify-between items-center">
                             <div>
-                                <p class="text-sm font-bold text-white">${record.modality}</p>
+                                <p class="text-sm font-bold text-gray-100">${record.modality}</p>
                                 <p class="text-xs text-gray-400">${time}</p>
                             </div>
                             <p class="text-lg font-bold text-red-400">${record.calories} kcal</p>
@@ -1805,7 +1820,7 @@
                 
             }, (error) => {
                 console.error("Error loading workout records:", error);
-                dailyWorkoutRecordsContainer.innerHTML = '<p class="text-red-400 italic">Error al cargar registros.</p>';
+                dailyWorkoutRecordsContainer.innerHTML = '<p class="text-red-600 italic">Error al cargar registros.</p>';
             });
         }
         
@@ -1902,7 +1917,6 @@
                 saveGlobalRoutineBtn.addEventListener('click', saveGlobalRoutine);
             }
 
-            // --- Evento de Workout (Escáner) ---
             startScanBtn.addEventListener('click', () => {
                 if (html5QrCode && html5QrCode.isScanning) {
                     stopQRScanner();
@@ -1912,7 +1926,7 @@
             });
         }
         
-        // --- Registro del Service Worker (NUEVO) ---
+        // --- Registro del Service Worker (SOLUCIÓN PWA FINAL) ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/service-worker.js')
